@@ -106,9 +106,15 @@ jobs:
           echo "APK_VERSION=$version" >> "$GITHUB_ENV"
 
       - name: Show APK signing certificate
+        continue-on-error: true
         run: |
-          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n 1)apksigner"
-          "$apksigner" verify --print-certs "$APK_FILE" | grep -E "Signer #1 certificate (DN|SHA-256)"
+          apksigner=""
+          for bt in $(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -rV); do
+            if [ -x "${bt}apksigner" ]; then apksigner="${bt}apksigner"; break; fi
+          done
+          if [ -z "$apksigner" ]; then echo "apksigner not found"; exit 0; fi
+          echo "Using $apksigner"
+          "$apksigner" verify --verbose --print-certs "$APK_FILE" 2>&1 | grep -E "Verifies|Verified using|Signer #1 certificate (DN|SHA-256)" || true
 
       - name: Publish to Releases
         env:
