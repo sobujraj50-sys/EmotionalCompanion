@@ -8,9 +8,13 @@
 - Private relationship details (nicknames, personal notes) go into the system instruction only through settings the user controls and can see.
 - Logs never contain the API key, raw audio, or transcript text.
 
-## Current state (Milestone C)
-- Permissions: `INTERNET` only. No microphone code yet.
-- The only network call is the user-triggered connection test (`models.get`). It sends the API key and model name to Google, and no audio or personal text.
+## Current state (Milestone D)
+- Permissions: `INTERNET`, `RECORD_AUDIO` (asked at first conversation), `MODIFY_AUDIO_SETTINGS` (audio routing).
+- Before the first conversation, a dialog explains that voice is streamed to Google while a conversation runs, and that free-tier data may be used to improve Google's products.
+- The microphone runs **only** between the user's tap on the mic and the stop tap. The session also ends on leaving the app, losing audio focus, the session limit, the daily budget, or silence. No background or ambient capture, and no foreground service.
+- Audio chunks go only to the Gemini Live WebSocket. Nothing is written to disk.
+- Captions exist only in memory for the current app run (last 6 lines) and are never stored.
+- Only local usage minutes (one number per day) are stored.
 - `allowBackup="false"` plus data-extraction rules exclude every domain from cloud backup and device transfer.
 
 ## API key

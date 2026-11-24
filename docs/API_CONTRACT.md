@@ -32,13 +32,25 @@ Source: https://ai.google.dev/gemini-api/docs/pricing
 - `gemini-3.8-live` / `-extended-thinking` / `3.8-flash-tts`: **not on the pricing page**, so treated as possibly paid and hidden in Free-only mode.
 - Free-tier content **is used to improve Google's products**. Paid-tier content is not.
 
-## Pending: must be confirmed in Milestone D
-- Exact WebSocket endpoint URL and API version path. The Live overview page didn't list it; check the Live API reference / WebSockets guide.
-- Setup message schema: model field, `generationConfig`, response modalities, `speechConfig` / voice-name field names.
-- Prebuilt voice catalog per model, including whether Sulafat, Achernar, Aoede, Leda, Vindemiatrix and Kore are available on `gemini-3.8-live`.
-- Bengali (`bn-BD`) support for native-audio output, and how language is set.
-- Mono channel count (assumed in `PcmAudioFormat`).
-- Voice activity detection config, interruption signal, turn-complete signal.
-- Session duration limits, context-window compression, session resumption and GoAway handling.
-- Error and close codes for quota exhaustion and invalid key.
-- Free-tier **rate limits** (requests/minute, concurrent sessions) for the Live models (rate-limits page). Google AI Pro is a consumer subscription and is **not** assumed to include API quota.
+## Live WebSocket: verified 2026-11-24 (used in Milestone D)
+Sources: https://ai.google.dev/api/live · https://ai.google.dev/gemini-api/docs/live-api/get-started-websocket · https://ai.google.dev/gemini-api/docs/live-guide · https://ai.google.dev/gemini-api/docs/live-session
+
+| Topic | Fact |
+|---|---|
+| Endpoint | `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=API_KEY` |
+| First message | `{"setup": {...}}`. Wait for `setupComplete` before sending anything else |
+| Setup fields used | `model: "models/{id}"`, `generationConfig.responseModalities: ["AUDIO"]`, `generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName`, `systemInstruction.parts[].text`, `inputAudioTranscription: {}`, `outputAudioTranscription: {}`, `contextWindowCompression.slidingWindow: {}`, `sessionResumption.handle` |
+| Language | No language-code field. Native audio picks the language automatically. Steer it with the system instruction. Bengali is listed as `bn` |
+| Audio in | `{"realtimeInput":{"audio":{"data":"<base64>","mimeType":"audio/pcm;rate=16000"}}}` (16-bit LE PCM). `audioStreamEnd` only with automatic VAD |
+| Audio out | `serverContent.modelTurn.parts[].inlineData.data`, raw 16-bit LE PCM at 24 kHz |
+| Turn signals | `serverContent.interrupted` (stop and clear playback), `generationComplete`, `turnComplete` |
+| Captions | `serverContent.inputTranscription.text`, `serverContent.outputTranscription.text` |
+| Limits | Audio-only session 15 min without compression (unlimited with it). Connection ≈10 min. Resumption handle valid 2 h |
+| Lifecycle | `goAway.timeLeft` before close. `sessionResumptionUpdate.newHandle` + `resumable` |
+| Voices | Prebuilt list (30) on the speech-generation page, including Sulafat (Warm), Achernar (Soft), Vindemiatrix (Gentle), Aoede (Breezy), Leda (Youthful), Kore (Firm) |
+| Not on 3.1 Flash Live | Affective dialog, proactive audio |
+
+### Open points (confirm on device)
+- Placement of `responseModalities`/`speechConfig`: the reference has them under `generationConfig`, while the guide's sample has `responseModalities` at the top of `setup`. The reference is used.
+- Close codes/reasons for invalid key, quota and invalid setup are not documented. They're classified loosely and the raw reason is shown.
+- Free-tier rate limits for Live (concurrent sessions, requests/min) are not checked yet.

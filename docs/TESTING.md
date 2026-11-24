@@ -3,7 +3,7 @@
 ## Automated
 | Suite | Command (Windows) | Contents |
 |---|---|---|
-| Unit | `gradlew.bat testDebugUnitTest` | `PcmAudioFormatTest` (5), `TimeOfDayTest` (3), `ThemeModeTest` (3), `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2) |
+| Unit | `gradlew.bat testDebugUnitTest` | `PcmAudioFormatTest` (5), `TimeOfDayTest` (3), `ThemeModeTest` (3), `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2), `ConversationTransitionsTest` (5), `LiveRulesTest` (7) |
 | Lint | `gradlew.bat lintDebug` | Report: `app\build\reports\lint-results-debug.html` |
 | Instrumented | `gradlew.bat connectedDebugAndroidTest` | None yet (added with Milestone B UI) |
 
@@ -20,6 +20,7 @@
 | 2026-11-24 | User's phone | Milestone B screens | ✅ (status-bar icons hard to read → fixed in build 3) |
 | 2026-11-24 | GitHub Actions (build 3) | lint | ❌ ContextCastToActivity → fixed |
 | 2026-11-24 | GitHub Actions (build 4) | unit tests · lint · `assembleDebug` | ✅ Release v0.3.0-mC-build4 |
+| 2026-11-24 | GitHub Actions (build 5) | unit tests · lint · `assembleDebug` | ✅ Release v0.4.0-mD-build5 |
 
 ## Physical-device checklist: Milestone A
 - [ ] APK from GitHub Releases downloads and installs
@@ -55,3 +56,21 @@ Uninstall the previous build first (debug signing key changes per build).
 - [ ] Close and reopen the app: key still saved, Home chip says "Gemini key saved"
 - [ ] Remove key → confirm → chip returns to "Gemini not set up"
 - [ ] Bengali language: the API screen text is all Bengali
+
+## Physical-device checklist: Milestone D (first real conversation)
+Uninstall the previous build, install build 5, then add the API key again (Settings → API key → Save and test).
+- [ ] Tap the mic: the disclosure dialog appears once, then Android asks for microphone permission
+- [ ] Denying permission shows the microphone-permission error card
+- [ ] After allowing: orb goes Connecting → Listening, chip says "Connected", timer runs, waveform moves with **your** voice
+- [ ] Say "আসসালামু আলাইকুম, কেমন আছো?": orb goes Thinking → Speaking, and she answers **out loud in Bengali**. Captions appear under "This conversation"
+- [ ] Bengali pronunciation and Bengali–English mixing sound natural (write a short note)
+- [ ] Talk over her while she speaks: she stops (Interrupted), then listens again
+- [ ] Tap the orb while she speaks: she goes silent at once
+- [ ] Speaker button switches between loudspeaker and earpiece. With Bluetooth earphones, test that audio goes to them when the speaker is off
+- [ ] No echo loop (she doesn't answer her own voice). If she does, turn off Settings → Conversation → "Interrupt by speaking" and retest
+- [ ] Tap ✕: mic stops immediately, orb returns to Resting, and the status-bar mic indicator turns off
+- [ ] Press Home during a conversation: it stops. Coming back shows "stopped when you left the app"
+- [ ] Wi-Fi/data off mid-conversation: Reconnecting, then a clear error. No crash
+- [ ] Stay silent for 60 s: the session ends with the "quiet moment" message
+- [ ] Usage line on Home increases after a conversation and survives an app restart
+- [ ] If any error card appears, copy its **Details** line and send it

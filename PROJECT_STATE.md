@@ -1,14 +1,14 @@
 # PROJECT_STATE
 
-_Last updated: 2026-11-24, Milestone C (secure API configuration)_
+_Last updated: 2026-11-24, Milestone D (live audio prototype)_
 
 ## Current status
 | Milestone | State |
 |---|---|
 | A: Environment & foundation | ✅ Done (CI green, opened on the user's phone 2026-11-24) |
 | B: Design & navigation | ✅ Done (phone screenshots 2026-11-24). Status-bar contrast fixed afterwards |
-| C: Secure API configuration | **CI build green (build 4). Waiting for phone test with a real key** |
-| D: Live audio prototype | Not started |
+| C: Secure API configuration | CI green (build 4). Phone test with a real key **not reported yet** (user went straight to D) |
+| D: Live audio prototype | **CI build green (build 5). Waiting for the first real conversation on the phone** |
 | E: Emotional Voice Studio | Not started |
 | F: Testing & APK | Not started |
 
@@ -45,6 +45,19 @@ _Last updated: 2026-11-24, Milestone C (secure API configuration)_
 - `INTERNET` permission added. No other permissions
 - Unit tests: `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2)
 
+## Milestone D: what exists
+- `GeminiLiveClient` (OkHttp 5.3.1 WebSocket, no logging) + `LiveProtocol`: setup with model, AUDIO modality, prebuilt voice, system instruction, input/output transcription, `contextWindowCompression.slidingWindow`, `sessionResumption`. Audio sent as `realtimeInput.audio` (`audio/pcm;rate=16000`). Parses `setupComplete`, `serverContent` (audio parts, transcriptions, `interrupted`, `turnComplete`), `goAway`, `sessionResumptionUpdate`
+- `AudioCaptureManager`: AudioRecord 16 kHz mono, VOICE_COMMUNICATION source, AcousticEchoCanceler + NoiseSuppressor when available, 100 ms chunks, real RMS level
+- `AudioPlaybackManager`: AudioTrack 24 kHz, USAGE_VOICE_COMMUNICATION, queue with instant `clear()` on interruption, real playback level
+- `AudioFocusManager`: transient focus, MODE_IN_COMMUNICATION (platform echo cancellation), loudspeaker ↔ earpiece/headset routing, stops the session on focus loss (e.g. phone call)
+- `LiveSessionManager`: full lifecycle, reconnection with the resumption handle (max 3, backoff 1–4 s, also on `goAway`), **half-duplex fallback** (mic muted while the AI speaks) when "Interrupt by speaking" is off or the device has no AEC, tap-orb-to-silence, in-memory captions (6 lines, never stored)
+- `ConversationStateManager` + pure `ConversationTransitions`: the orb shows only states caused by real events. The waveform shows real mic/playback levels
+- `UsageController` + `UsageRules`: session length (default 10 min), daily budget (30 min), idle timeout (60 s). Counted locally and shown on Home as an estimate
+- `ConnectionErrorHandler`: close codes/reasons and handshake HTTP codes → EN/BN messages. Close reason shown as "Details" (any `key=` is masked)
+- First-use disclosure dialog (audio goes to Google, free-tier data use), then the RECORD_AUDIO request. Leaving the app stops the session (no background recording)
+- Default personality (spec §12) with honesty rules as the system instruction. Voice `Sulafat` (Warm)
+- Unit tests: `ConversationTransitionsTest` (5), `LiveRulesTest` (7)
+
 ## Verification record
 | Check | Where | Result |
 |---|---|---|
@@ -59,9 +72,11 @@ _Last updated: 2026-11-24, Milestone C (secure API configuration)_
 | Milestone B on phone | User's screenshots (Home, Voice, Settings) | ✅ Dark theme, nav, orb, honest disabled mic |
 | Milestone C build 3 | GitHub Actions run 45444638514 | ⚠️ APK built, **lint error** `ContextCastToActivity` (ApiConfigScreen) |
 | Milestone C build 4 (fix: `LocalActivity`) | GitHub Actions run 45445065154 | ✅ tests · lint · APK, Release `v0.3.0-mC-build4` |
-| Milestone C on phone with real key | Physical device | ⏳ **Not yet run** |
+| Milestone C on phone with real key | Physical device | ⏳ **Not reported** |
+| Milestone D build 5 | GitHub Actions run 45449536699 | ✅ tests · lint · APK, Release `v0.4.0-mD-build5` (13.8 MB) |
+| Milestone D real conversation | Physical device | ⏳ **Not yet run** |
 
-Milestone C is done once the phone checklist in docs/TESTING.md passes with a real key.
+Milestone D is done only when a real Bengali voice conversation works on the phone (checklist in docs/TESTING.md). Everything in D is code- and CI-verified, **not yet device-verified**.
 
 ## Decisions
 1. **Build on GitHub Actions**, the same way as the user's other apps. ZIP upload → unpack → test → lint → APK → Release.
@@ -76,5 +91,12 @@ Milestone C is done once the phone checklist in docs/TESTING.md passes with a re
 - Signing secrets aren't set. Until they are, each new APK requires uninstalling the previous one (and re-entering the API key).
 - `gemini-3.1-flash-live-preview` is labeled **legacy** on the models page. It is the only free-confirmed Live model besides the access-limited 2.5 native-audio preview. Re-check the pricing page before Milestone D, in case a 3.8 Live model gets a free tier.
 
+## Known risks to check on the device
+- `generationConfig.responseModalities/speechConfig` follow the API reference. The WebSocket guide's sample puts `responseModalities` directly in `setup`. If Gemini rejects the setup (error "Gemini rejected the session settings" + Details), move those fields and retest.
+- Voice `Sulafat` comes from the TTS voice list, which the Live guide points to. If it's rejected for the Live model, the Details line will say so.
+- Google's close-reason wording isn't documented, so error classification is best-effort. Details always shows the raw reason.
+- `gemini-3.1-flash-live-preview` is labeled legacy. Affective dialog and proactive audio are **not supported on it** (Live guide), so they aren't enabled.
+- Echo/feedback depends on the phone's AEC quality. If she hears herself, turn off "Interrupt by speaking" (half duplex).
+
 ## Next milestone
-**D: Live audio prototype.** First verify the Live WebSocket endpoint, setup message, voice config, VAD and interruption fields, session limits and resumption (docs/API_CONTRACT.md "Pending"). Then add RECORD_AUDIO, AudioRecord 16 kHz capture with AEC/NS, AudioTrack 24 kHz playback queue, a WebSocket client, conversation states driving the orb, real amplitude for the waveform, mic stop, and error/quota handling.
+**E: Emotional Voice Studio.** Voice selection and audition with the same Bengali/English/mixed test lines, PersonalityEngine (nickname, warmth, humor, romantic tone, expressiveness, talkativeness, language) generating the system instruction, and an offline Android TTS fallback.
