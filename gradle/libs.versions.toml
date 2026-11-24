@@ -1,20 +1,19 @@
-# Versions checked against official release pages on 2026-11-24.
-# See docs/ARCHITECTURE.md -> "Dependency verification" for sources and caveats.
+# Same toolchain as the user's NexusNotes app, which already builds on GitHub Actions
+# (AGP 9.2.1 / Gradle 9.4.1 / Kotlin 2.3.20 / BOM 2026.08.00 / compileSdk 37).
+# See docs/ARCHITECTURE.md -> "Dependency choices".
 [versions]
-agp = "9.5.0"
-kotlin = "2.4.20"
+agp = "9.2.1"
+kotlin = "2.3.20"
 coreKtx = "1.19.1"
 activityCompose = "1.13.0"
 lifecycle = "2.11.1"
-composeBom = "2026.11.01"
+composeBom = "2026.08.00"
 # Test libraries: long-standing stable releases (not necessarily the newest).
 junit = "4.13.2"
 androidxJunit = "1.3.0"
 espressoCore = "3.7.0"
 
 [libraries]
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }

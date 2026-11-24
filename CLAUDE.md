@@ -22,5 +22,7 @@ Read `PROJECT_STATE.md` first in every session. Update it at the end of every mi
 - Create a package only when it gets real code. No empty placeholder classes.
 - Kotlin official code style. Compose UI uses `MaterialTheme` tokens from `core/designsystem`, never raw hex in screens.
 - User-facing strings go in `res/values/strings.xml`, with Bengali in `res/values-bn/`.
-- Windows commands: `gradlew.bat assembleDebug`, `gradlew.bat testDebugUnitTest`, `gradlew.bat lintDebug`.
+- Builds run on GitHub Actions (`.github/workflows/build.yml`). The user installs APKs from Releases. Local Windows commands: `gradlew.bat assembleDebug`, `gradlew.bat testDebugUnitTest`, `gradlew.bat lintDebug`.
+- A workflow file change must be pushed directly; the ZIP-upload path deliberately skips `.github/`.
+- Toolchain matches the user's NexusNotes app (proven on CI). Upgrade versions only in separate commits.
 - Commits: small, one concern each, imperative subject line.

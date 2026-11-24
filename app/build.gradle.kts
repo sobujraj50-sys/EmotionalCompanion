@@ -1,35 +1,53 @@
 plugins {
+    // AGP 9 has built-in Kotlin support, so the separate kotlin-android plugin is not applied.
     alias(libs.plugins.android.application)
-    // Kotlin itself is built into AGP 9; only the Compose compiler plugin is applied.
     alias(libs.plugins.kotlin.compose)
 }
 
+// Signing key comes from GitHub Actions secrets (see .github/workflows/build.yml).
+// Never commit a keystore or its password.
+val ecKeystorePath: String? = System.getenv("EC_KEYSTORE_PATH")
+val ecKeystorePassword: String? = System.getenv("EC_KEYSTORE_PASSWORD")
+val hasEcKeystore = !ecKeystorePath.isNullOrBlank() && !ecKeystorePassword.isNullOrBlank()
+
 android {
     namespace = "com.emotionalcompanion"
-    compileSdk = 36
+    // Compose 1.12 (BOM 2026.08.00) requires compileSdk 37.
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.emotionalcompanion"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0-milestoneA"
+        // CI passes -PversionCode=<run number> so every build installs as an update.
+        versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
+        versionName = "0.1.0-mA"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
+    signingConfigs {
+        if (hasEcKeystore) {
+            create("ec") {
+                storeFile = file(ecKeystorePath!!)
+                storePassword = ecKeystorePassword
+                keyAlias = "ec"
+                keyPassword = ecKeystorePassword
+            }
         }
+    }
+
+    buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // R8 is enabled in Milestone F together with keep rules for OkHttp/serialization.
+            isMinifyEnabled = false
+            if (hasEcKeystore) {
+                signingConfig = signingConfigs.getByName("ec")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

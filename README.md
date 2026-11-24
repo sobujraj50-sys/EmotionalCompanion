@@ -4,22 +4,20 @@ A personal Android voice companion: warm Bengali–English conversation through 
 
 **Status:** Milestone A (project foundation). The app builds into a single static screen. No voice, network or microphone features yet. See `PROJECT_STATE.md`.
 
-## Requirements (Windows)
+## How it is built: GitHub Actions
+No local build is needed. GitHub builds the APK on every push to `main`.
 
-| Tool | Version |
-|---|---|
-| Android Studio | A recent stable release that supports **Android Gradle Plugin 9.5** |
-| JDK | 17 or newer (Android Studio's bundled JBR is fine) |
-| Android SDK | Platform **API 36**, Build-Tools **36.0.0** (install via SDK Manager) |
-| Gradle | Not needed. The wrapper downloads **9.6.0** on first build |
+1. **Update the code:** upload the project ZIP to the repo root with **Add file → Upload files → Commit**. The workflow unpacks it, commits the source, runs unit tests and lint, builds the APK and creates a **Release**. Claude can also push changes directly.
+2. **Get the APK:** open the repo → **Releases** → newest release → download `EmotionalCompanion-…apk` on the phone and install it. The first time, allow "Install unknown apps" for your browser.
+3. **If a build fails:** **Actions** tab → the red run → open the failed step and copy the log. The `reports` artifact holds the test and lint reports.
 
-## First build
+### Signing (so new builds install as updates)
+Without signing secrets, each build uses a temporary debug key. A new APK then **cannot update** the installed app, so you must uninstall it first. To fix that, add two repository secrets (**Settings → Secrets and variables → Actions**):
+- `KEYSTORE_BASE64`: the keystore file, base64-encoded (key alias must be `ec`)
+- `KEYSTORE_PASSWORD`: its password (used for both store and key)
 
-1. Unzip the project to a short path without spaces, e.g. `C:\dev\EmotionalCompanion`.
-2. Android Studio → **File → Open** → choose that folder. Let Gradle sync finish.
-   - If sync says *"The project is using an incompatible version of the Android Gradle plugin"*, update Android Studio (**Help → Check for Updates**). Only if updating isn't possible, lower `agp` in `gradle/libs.versions.toml` to the newest version your Studio supports. Then match the Gradle version from the AGP release notes.
-3. Studio creates `local.properties` with your SDK path. It is git-ignored and must not be committed.
-4. Build from the Studio terminal (**View → Tool Windows → Terminal**):
+## Optional: local build on Windows
+Android Studio with JDK 17+ and the SDK for API 37. Open the folder, then:
 
 ```cmd
 gradlew.bat assembleDebug
@@ -27,19 +25,13 @@ gradlew.bat testDebugUnitTest
 gradlew.bat lintDebug
 ```
 
-The APK appears at `app\build\outputs\apk\debug\app-debug.apk`.
-
 ## Install on your phone
 
-1. On the phone, open **Settings → About phone** and tap **Build number** 7 times. Then enable **Developer options → USB debugging**.
+(Only for local builds.) 1. On the phone, open **Settings → About phone** and tap **Build number** 7 times. Then enable **Developer options → USB debugging**.
 2. Connect by USB and accept the debugging prompt.
-3. Either press **Run ▶** in Android Studio, or:
+3. Either press **Run ▶** in Android Studio, or use `adb install -r <apk>`.
 
-```cmd
-%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
-```
-
-The debug build installs as `com.emotionalcompanion.debug`, so it can sit beside a later release build.
+Installing straight from GitHub Releases needs no USB at all (see above).
 
 ## Configuration
 

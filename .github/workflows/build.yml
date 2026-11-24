@@ -1,0 +1,129 @@
+name: Build APK
+
+# How it works:
+# 1. Upload the project ZIP to the repository root with GitHub "Add file > Upload files".
+# 2. This workflow unpacks it into the repository, deletes the ZIP, commits the source,
+#    runs the unit tests and lint, builds the APK and publishes it under Releases.
+# You can also run it by hand: Actions > Build APK > Run workflow.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-apk
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Unpack uploaded project ZIP
+        run: |
+          shopt -s nullglob
+          zips=( *.zip )
+          if [ ${#zips[@]} -eq 0 ]; then
+            echo "No ZIP in the repository root - building the repository as it is."
+            exit 0
+          fi
+          if [ ${#zips[@]} -gt 1 ]; then
+            echo "::error::More than one .zip in the repository root (${zips[*]}). Delete the extra ones and upload again."
+            exit 1
+          fi
+          zip="${zips[0]}"
+          echo "Unpacking $zip"
+          rm -rf /tmp/unpack && mkdir -p /tmp/unpack
+          unzip -q "$zip" -d /tmp/unpack
+          settings="$(find /tmp/unpack -maxdepth 2 -name settings.gradle.kts | head -n 1)"
+          if [ -z "$settings" ]; then
+            echo "::error::$zip does not contain settings.gradle.kts. Upload the full project ZIP."
+            exit 1
+          fi
+          src="$(dirname "$settings")"
+          git rm -q --cached "$zip" || true
+          rm -f "$zip"
+          # Mirror the project into the repo. .git and .github are never deleted or overwritten:
+          # GITHUB_TOKEN is not allowed to push workflow changes, so the ZIP's copy is skipped.
+          rsync -a --delete --filter='P .git/' --filter='P .github/' --exclude='.git/' --exclude='.github/' "$src"/ ./
+          chmod +x gradlew
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "ZIP matched the repository; nothing to commit."
+          else
+            git commit -q -m "Unpack $zip [skip ci]"
+            git push
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+
+      - name: Run unit tests
+        run: ./gradlew --no-daemon testDebugUnitTest
+
+      - name: Run lint
+        id: lint
+        continue-on-error: true
+        run: ./gradlew --no-daemon lintDebug
+
+      - name: Build APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          EC_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$EC_KEYSTORE_PASSWORD" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/ec.jks"
+            export EC_KEYSTORE_PATH="$RUNNER_TEMP/ec.jks"
+            ./gradlew --no-daemon assembleRelease -PversionCode=${{ github.run_number }}
+            apk="$(ls app/build/outputs/apk/release/*.apk | head -n 1)"
+          else
+            echo "::warning::KEYSTORE_BASE64 / KEYSTORE_PASSWORD secrets are missing. Building a DEBUG APK with a temporary key - it cannot update an app installed from an earlier build."
+            ./gradlew --no-daemon assembleDebug -PversionCode=${{ github.run_number }}
+            apk="$(ls app/build/outputs/apk/debug/*.apk | head -n 1)"
+          fi
+          version="$(grep -m1 'versionName = ' app/build.gradle.kts | sed -E 's/.*"(.*)".*/\1/')"
+          out="EmotionalCompanion-${version}-build${{ github.run_number }}.apk"
+          cp "$apk" "$out"
+          echo "APK_FILE=$out" >> "$GITHUB_ENV"
+          echo "APK_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Publish to Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINT_OUTCOME: ${{ steps.lint.outcome }}
+        run: |
+          tag="v${APK_VERSION}-build${{ github.run_number }}"
+          lint_note="Lint: passed."
+          if [ "$LINT_OUTCOME" != "success" ]; then
+            lint_note="Lint: reported problems - see the 'reports' artifact of this run."
+          fi
+          gh release create "$tag" "$APK_FILE" \
+            --target "$(git rev-parse HEAD)" \
+            --title "Emotional Companion ${APK_VERSION} (build ${{ github.run_number }})" \
+            --notes "Built automatically from commit $(git rev-parse --short HEAD). Unit tests: passed. ${lint_note} Download the APK below and install it on your phone."
+
+      - name: Upload test and lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: app/build/reports/
+          if-no-files-found: ignore
