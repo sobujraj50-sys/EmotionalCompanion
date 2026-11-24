@@ -10,6 +10,8 @@ enum class LiveError {
     KeyRejected,
     PermissionDenied,
     QuotaExceeded,
+    /** The local daily budget (Settings) is used up. */
+    BudgetReached,
     ModelUnavailable,
     InvalidSetup,
     ServerError,

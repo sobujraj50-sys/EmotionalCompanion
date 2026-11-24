@@ -38,6 +38,8 @@ object LiveProtocol {
         voiceName: String,
         systemInstruction: String,
         resumptionHandle: String?,
+        /** Captions + resumption are off for one-shot voice auditions. */
+        conversation: Boolean = true,
     ): String {
         val speechConfig = JSONObject().put(
             "voiceConfig",
@@ -53,12 +55,14 @@ object LiveProtocol {
             .put("model", "models/$modelId")
             .put("generationConfig", generationConfig)
             .put("systemInstruction", JSONObject().put("parts", JSONArray().put(JSONObject().put("text", systemInstruction))))
-            .put("inputAudioTranscription", JSONObject())
-            .put("outputAudioTranscription", JSONObject())
-            // Removes the 15-minute audio session limit.
-            .put("contextWindowCompression", JSONObject().put("slidingWindow", JSONObject()))
-            // Lets a session survive the ~10-minute connection lifetime.
-            .put("sessionResumption", resumption)
+        if (conversation) {
+            setup.put("inputAudioTranscription", JSONObject())
+                .put("outputAudioTranscription", JSONObject())
+                // Removes the 15-minute audio session limit.
+                .put("contextWindowCompression", JSONObject().put("slidingWindow", JSONObject()))
+                // Lets a session survive the ~10-minute connection lifetime.
+                .put("sessionResumption", resumption)
+        }
         return JSONObject().put("setup", setup).toString()
     }
 
@@ -67,6 +71,10 @@ object LiveProtocol {
         val data = Base64.getEncoder().encodeToString(pcm)
         return "{\"realtimeInput\":{\"audio\":{\"data\":\"$data\",\"mimeType\":\"$INPUT_MIME_TYPE\"}}}"
     }
+
+    /** Text turn (realtimeInput.text, per the WebSockets guide). */
+    fun textMessage(text: String): String =
+        JSONObject().put("realtimeInput", JSONObject().put("text", text)).toString()
 
     fun audioStreamEndMessage(): String = "{\"realtimeInput\":{\"audioStreamEnd\":true}}"
 

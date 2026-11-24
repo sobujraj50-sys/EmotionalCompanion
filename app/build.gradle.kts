@@ -21,7 +21,7 @@ android {
         targetSdk = 36
         // CI passes -PversionCode=<run number> so every build installs as an update.
         versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
-        versionName = "0.4.0-mD"
+        versionName = "0.5.0-mE"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }

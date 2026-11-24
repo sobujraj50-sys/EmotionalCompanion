@@ -38,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -79,6 +80,12 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var showDisclosure by rememberSaveable { mutableStateOf(false) }
+
+    val offlineNotice = stringResource(R.string.offline_spoken_notice)
+    val bangla = stringResource(R.string.is_bangla_locale) == "true"
+    LaunchedEffect(state.error?.error) {
+        if (state.error?.error == LiveError.NoInternet) viewModel.speakOfflineNotice(offlineNotice, bangla)
+    }
 
     LifecycleResumeEffect(Unit) {
         viewModel.onResume()
@@ -400,6 +407,7 @@ private fun LiveError.messageRes(): Int = when (this) {
     LiveError.KeyRejected -> R.string.api_result_key_rejected
     LiveError.PermissionDenied -> R.string.api_result_permission
     LiveError.QuotaExceeded -> R.string.api_result_quota
+    LiveError.BudgetReached -> R.string.end_daily_budget
     LiveError.ModelUnavailable -> R.string.api_result_model
     LiveError.InvalidSetup -> R.string.live_error_invalid_setup
     LiveError.ServerError -> R.string.api_result_server

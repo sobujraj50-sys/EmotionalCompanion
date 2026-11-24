@@ -50,8 +50,6 @@
     <string name="connection_error">সংযোগে সমস্যা</string>
 
     <string name="voice_title">ভয়েস</string>
-    <string name="voice_not_ready_title">ভয়েস স্টুডিও এখনো তৈরি হয়নি</string>
-    <string name="voice_not_ready_body">ভয়েস বাছাই, শুনে দেখা আর সূক্ষ্ম পরিবর্তনের সুবিধা পরের একটি মাইলস্টোনে আসবে। শুধু সেই ভয়েসগুলোই দেওয়া হবে, যেগুলো লাইভ মডেলে আছে বলে Google নিশ্চিত করেছে।</string>
 
     <string name="settings_title">সেটিংস</string>
     <string name="settings_section_appearance">চেহারা</string>
@@ -156,4 +154,64 @@
     <string name="unit_minutes">%1$d মিনিট</string>
     <string name="unit_seconds">%1$d সেকেন্ড</string>
     <string name="settings_limits_note">এই সীমাগুলো আপনাকে ফ্রি কোটার মধ্যে রাখতে সাহায্য করে। মিনিটগুলো এই ফোনে গোনা হয়। এটা একটা আনুমানিক হিসাব, Google-এর বিলিং তথ্য নয়।</string>
+
+    <!-- Milestone E: Voice Studio and personality -->
+    <string name="voice_section_test_line">পরীক্ষার লাইন (সব ভয়েসের জন্য একই)</string>
+    <string name="dialogue_bangla">বাংলা</string>
+    <string name="dialogue_english">English</string>
+    <string name="dialogue_mixed">মিশ্র</string>
+    <string name="voice_section_voices">ভয়েস</string>
+    <string name="voice_busy_conversation">ভয়েস শুনতে আগে হোমে কথোপকথন বন্ধ করুন।</string>
+    <string name="voice_show_all">৩০টি ভয়েসই দেখান</string>
+    <string name="voice_show_fewer">শুধু প্রস্তাবিত ভয়েস দেখান</string>
+    <string name="voice_quota_note">প্রতিটি নমুনা একটি ছোট Gemini Live সেশন। এতে আপনার ফ্রি কোটার কয়েক সেকেন্ড খরচ হয়, আর আজকের বাজেটেও গোনা হয়।</string>
+    <string name="voice_section_delivery">সে কীভাবে কথা বলবে</string>
+    <string name="pref_warmth">উষ্ণতা</string>
+    <string name="pref_softness">কোমলতা</string>
+    <string name="pref_energy">উদ্যম</string>
+    <string name="pref_pace">কথার গতি</string>
+    <string name="voice_delivery_note">এগুলো তার নির্দেশনায় দেওয়া স্টাইলের অনুরোধ, নিখুঁত নিয়ন্ত্রণ নয়। প্রভাবটা বুঝতে একটি নমুনা শুনে দেখুন।</string>
+    <string name="voice_section_personality">ব্যক্তিত্ব</string>
+    <string name="voice_personality_body">ডাকনাম, ভাষা, ভালোবাসা, রসিকতা, রোমান্স আর আরও কিছু।</string>
+    <string name="voice_open_personality">ব্যক্তিত্ব বদলান</string>
+    <string name="voice_section_offline">অফলাইন ফোন ভয়েস</string>
+    <string name="voice_offline_body">আপনার ফোনের নিজস্ব ভয়েস। ইন্টারনেট ছাড়াই কাজ করে, তবে শুধু লেখা পড়তে পারে, এটা AI নয়। Gemini-তে সংযোগ না পেলে অ্যাপ এটা দিয়ে আপনাকে জানায়।</string>
+    <string name="voice_offline_play">ফোন ভয়েস শুনুন</string>
+    <string name="voice_offline_unavailable">এই ফোনে কোনো text-to-speech ইঞ্জিন নেই।</string>
+    <string name="voice_offline_no_bangla">ফোন ভয়েসে বাংলা ইনস্টল করা নেই। ফোনের text-to-speech সেটিংস থেকে বাংলা যোগ করুন।</string>
+    <string name="voice_default">ডিফল্ট</string>
+    <string name="voice_stop">থামান</string>
+    <string name="voice_listen">শুনুন</string>
+    <string name="voice_error_rejected">বাছাই করা মডেলে Gemini এই ভয়েসটি গ্রহণ করেনি। অন্য ভয়েস বা মডেল বেছে দেখুন।</string>
+    <string name="voice_error_generic">নমুনাটি চালানো গেল না।</string>
+    <string name="level_very_low">খুব কম</string>
+    <string name="level_low">কম</string>
+    <string name="level_medium">মাঝারি</string>
+    <string name="level_high">বেশি</string>
+    <string name="level_very_high">খুব বেশি</string>
+    <string name="personality_title">ব্যক্তিত্ব</string>
+    <string name="personality_section_address">সে আপনাকে কী বলে ডাকবে</string>
+    <string name="personality_nickname">আপনার ডাকনাম</string>
+    <string name="personality_nickname_hint">যেমন: জান</string>
+    <string name="personality_nickname_note">ডাকনাম না চাইলে ফাঁকা রাখুন। সর্বোচ্চ ৩০ অক্ষর।</string>
+    <string name="personality_section_language">ভাষা</string>
+    <string name="language_bangla_first">বেশিরভাগ বাংলা, কিছু ইংরেজি</string>
+    <string name="language_mixed">স্বাভাবিক বাংলা-ইংরেজি মিশ্রণ</string>
+    <string name="language_english_first">বেশিরভাগ ইংরেজি, কিছু বাংলা</string>
+    <string name="personality_section_character">স্বভাব</string>
+    <string name="pref_affection">ভালোবাসা</string>
+    <string name="pref_care">যত্ন</string>
+    <string name="pref_humor">রসিকতা</string>
+    <string name="pref_romance">রোমান্টিক সুর</string>
+    <string name="pref_expressiveness">আবেগের প্রকাশ</string>
+    <string name="pref_talkativeness">কথা বলার পরিমাণ</string>
+    <string name="pref_initiative">নিজে থেকে কথা তোলা</string>
+    <string name="personality_reset">স্বভাব ডিফল্টে ফেরান</string>
+    <string name="personality_section_honesty">সবসময় চালু</string>
+    <string name="personality_honesty_body">ওপরে যা-ই বাছুন, সে সৎ থাকবে। সে একটি AI। সে কখনো আপনার স্ত্রী বা কোনো বাস্তব মানুষ সেজে কথা বলবে না, বানানো স্মৃতির কথা বলবে না, হিংসা দেখাবে না, আর আপনার বাস্তব সম্পর্কের পাশে থাকবে। এই নিয়মগুলো বন্ধ করা যায় না।</string>
+    <string name="personality_show_instruction">Gemini-কে পাঠানো নির্দেশনাটা হুবহু দেখান</string>
+    <string name="personality_hide_instruction">নির্দেশনা লুকান</string>
+    <string name="personality_applies_next">পরিবর্তনগুলো পরের কথোপকথন থেকে কার্যকর হবে।</string>
+    <string name="offline_spoken_notice">এই মুহূর্তে ইন্টারনেট নেই, তাই কথা বলতে পারছি না। সংযোগটা দেখে আবার চেষ্টা করো।</string>
+    <string name="is_bangla_locale">true</string>
 </resources>

@@ -2,6 +2,8 @@ package com.emotionalcompanion.data.settings
 
 import com.emotionalcompanion.ai.gemini.GeminiModelCatalog
 import com.emotionalcompanion.ai.gemini.UsageLimits
+import com.emotionalcompanion.ai.gemini.VoiceConfiguration
+import com.emotionalcompanion.ai.personality.PersonalitySettings
 
 data class AppSettings(
     val onboardingDone: Boolean = false,
@@ -16,6 +18,9 @@ data class AppSettings(
     /** Full duplex: the user can interrupt by speaking. Off = half duplex (mic muted while the AI speaks). */
     val voiceInterruption: Boolean = true,
     val usageLimits: UsageLimits = UsageLimits(),
+    /** Prebuilt Gemini voice, resolved through VoiceConfiguration. */
+    val voiceName: String = VoiceConfiguration.DEFAULT_VOICE,
+    val personality: PersonalitySettings = PersonalitySettings(),
 )
 
 /** Dark is the primary design (spec §7); light and follow-system are optional. */

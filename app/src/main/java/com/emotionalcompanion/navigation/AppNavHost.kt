@@ -26,11 +26,13 @@ import com.emotionalcompanion.R
 import com.emotionalcompanion.core.common.AppContainer
 import com.emotionalcompanion.core.designsystem.AppIcons
 import com.emotionalcompanion.features.home.HomeScreen
+import com.emotionalcompanion.features.personality.PersonalityScreen
 import com.emotionalcompanion.features.settings.ApiConfigScreen
 import com.emotionalcompanion.features.settings.SettingsScreen
 import com.emotionalcompanion.features.voicestudio.VoiceStudioScreen
 
 private const val API_CONFIG_ROUTE = "settings/api"
+private const val PERSONALITY_ROUTE = "voice/personality"
 
 enum class TopLevelDestination(
     val route: String,
@@ -55,7 +57,8 @@ fun AppNavHost(container: AppContainer) {
                 TopLevelDestination.entries.forEach { destination ->
                     NavigationBarItem(
                         selected = currentRoute == destination.route ||
-                            (destination == TopLevelDestination.Settings && currentRoute == API_CONFIG_ROUTE),
+                            (destination == TopLevelDestination.Settings && currentRoute == API_CONFIG_ROUTE) ||
+                            (destination == TopLevelDestination.Voice && currentRoute == PERSONALITY_ROUTE),
                         onClick = { navController.navigateTopLevel(destination) },
                         icon = { Icon(destination.icon(), contentDescription = null) },
                         label = { Text(stringResource(destination.labelRes)) },
@@ -78,7 +81,13 @@ fun AppNavHost(container: AppContainer) {
                 )
             }
             composable(TopLevelDestination.Voice.route) {
-                VoiceStudioScreen()
+                VoiceStudioScreen(
+                    container = container,
+                    onOpenPersonality = { navController.navigate(PERSONALITY_ROUTE) },
+                )
+            }
+            composable(PERSONALITY_ROUTE) {
+                PersonalityScreen(container = container, onBack = { navController.popBackStack() })
             }
             composable(TopLevelDestination.Settings.route) {
                 SettingsScreen(

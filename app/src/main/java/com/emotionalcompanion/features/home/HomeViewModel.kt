@@ -10,6 +10,7 @@ import com.emotionalcompanion.ai.gemini.LiveError
 import com.emotionalcompanion.ai.gemini.LiveSessionManager
 import com.emotionalcompanion.ai.gemini.SessionEndReason
 import com.emotionalcompanion.ai.gemini.TranscriptLine
+import com.emotionalcompanion.core.audio.OfflineSpeech
 import com.emotionalcompanion.core.common.AppContainer
 import com.emotionalcompanion.core.security.SecretStore
 import com.emotionalcompanion.data.settings.SettingsRepository
@@ -48,6 +49,7 @@ class HomeViewModel(
     secretStore: SecretStore,
     private val settings: SettingsRepository,
     private val live: LiveSessionManager,
+    private val offlineSpeech: OfflineSpeech,
 ) : ViewModel() {
 
     private val timeOfDay = MutableStateFlow(TimeOfDay.fromHour(LocalTime.now().hour))
@@ -101,6 +103,11 @@ class HomeViewModel(
 
     fun onMicPermissionDenied() = live.reportError(ClassifiedError(LiveError.MicPermission))
 
+    /** Offline fallback: the phone's own TTS reads a short notice when Gemini can't be reached. */
+    fun speakOfflineNotice(text: String, bangla: Boolean) {
+        offlineSpeech.speak(text, bangla)
+    }
+
     fun acceptDisclosure() {
         viewModelScope.launch { settings.setAudioDisclosureAccepted() }
     }
@@ -112,6 +119,7 @@ class HomeViewModel(
                     secretStore = container.secretStore,
                     settings = container.settingsRepository,
                     live = container.liveSessionManager,
+                    offlineSpeech = container.offlineSpeech,
                 )
             }
         }

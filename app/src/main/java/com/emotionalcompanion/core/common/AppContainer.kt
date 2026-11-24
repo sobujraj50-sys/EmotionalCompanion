@@ -7,9 +7,11 @@ import com.emotionalcompanion.ai.gemini.HttpGeminiConnectionTester
 import com.emotionalcompanion.ai.gemini.LiveSessionManager
 import com.emotionalcompanion.ai.gemini.SessionEndReason
 import com.emotionalcompanion.ai.gemini.UsageController
+import com.emotionalcompanion.ai.gemini.VoiceAuditionPlayer
 import com.emotionalcompanion.core.audio.AudioCaptureManager
 import com.emotionalcompanion.core.audio.AudioFocusManager
 import com.emotionalcompanion.core.audio.AudioPlaybackManager
+import com.emotionalcompanion.core.audio.OfflineSpeech
 import com.emotionalcompanion.core.security.KeystoreSecretStore
 import com.emotionalcompanion.core.security.SecretStore
 import com.emotionalcompanion.data.settings.SettingsRepository
@@ -46,6 +48,18 @@ class AppContainer(context: Context) {
         )
     }
     val liveSessionManager: LiveSessionManager by liveSessionLazy
+
+    val voiceAuditionPlayer: VoiceAuditionPlayer by lazy {
+        VoiceAuditionPlayer(
+            client = GeminiLiveClient(),
+            secretStore = secretStore,
+            settings = settingsRepository,
+            usage = UsageController(settingsRepository),
+            scope = applicationScope,
+        )
+    }
+
+    val offlineSpeech: OfflineSpeech by lazy { OfflineSpeech(appContext) }
 
     /** Ends a running conversation without creating the manager if it was never used. */
     fun stopLiveSession(reason: SessionEndReason) {

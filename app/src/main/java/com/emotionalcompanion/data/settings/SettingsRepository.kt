@@ -11,6 +11,10 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.emotionalcompanion.ai.gemini.GeminiModelCatalog
 import com.emotionalcompanion.ai.gemini.UsageLimits
+import com.emotionalcompanion.ai.gemini.VoiceConfiguration
+import com.emotionalcompanion.ai.personality.LanguagePreference
+import com.emotionalcompanion.ai.personality.Level
+import com.emotionalcompanion.ai.personality.PersonalitySettings
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -36,6 +40,10 @@ class SettingsRepository(context: Context) {
         val DailyBudgetMinutes = intPreferencesKey("daily_budget_minutes")
         val IdleTimeoutSeconds = intPreferencesKey("idle_timeout_seconds")
         val UsageDay = stringPreferencesKey("usage_day")
+        val VoiceName = stringPreferencesKey("voice_name")
+        val Nickname = stringPreferencesKey("p_nickname")
+        val Language = stringPreferencesKey("p_language")
+        fun level(name: String) = intPreferencesKey("p_$name")
         val UsageSeconds = intPreferencesKey("usage_seconds")
     }
 
@@ -56,6 +64,8 @@ class SettingsRepository(context: Context) {
                     dailyBudgetMinutes = p[Keys.DailyBudgetMinutes] ?: UsageLimits().dailyBudgetMinutes,
                     idleTimeoutSeconds = p[Keys.IdleTimeoutSeconds] ?: UsageLimits().idleTimeoutSeconds,
                 ),
+                voiceName = VoiceConfiguration.resolve(p[Keys.VoiceName]),
+                personality = readPersonality(p),
             )
         }
 
@@ -112,4 +122,50 @@ class SettingsRepository(context: Context) {
             it[Keys.UsageSeconds] = current + seconds
         }
     }
+
+    suspend fun setVoiceName(name: String) {
+        dataStore.edit { it[Keys.VoiceName] = VoiceConfiguration.resolve(name) }
+    }
+
+    suspend fun setPersonality(value: PersonalitySettings) {
+        dataStore.edit { prefs ->
+            prefs[Keys.Nickname] = PersonalitySettings.cleanNickname(value.nickname)
+            prefs[Keys.Language] = value.language.name
+            levelFields(value).forEach { (name, level) -> prefs[Keys.level(name)] = level.ordinal }
+        }
+    }
+
+    private fun readPersonality(p: Preferences): PersonalitySettings {
+        val d = PersonalitySettings()
+        fun lvl(name: String, default: Level) = Level.fromIndex(p[Keys.level(name)]) ?: default
+        return PersonalitySettings(
+            nickname = p[Keys.Nickname] ?: d.nickname,
+            language = LanguagePreference.entries.firstOrNull { it.name == p[Keys.Language] } ?: d.language,
+            affection = lvl("affection", d.affection),
+            care = lvl("care", d.care),
+            humor = lvl("humor", d.humor),
+            romance = lvl("romance", d.romance),
+            expressiveness = lvl("expressiveness", d.expressiveness),
+            talkativeness = lvl("talkativeness", d.talkativeness),
+            initiative = lvl("initiative", d.initiative),
+            warmth = lvl("warmth", d.warmth),
+            softness = lvl("softness", d.softness),
+            energy = lvl("energy", d.energy),
+            pace = lvl("pace", d.pace),
+        )
+    }
+
+    private fun levelFields(v: PersonalitySettings): List<Pair<String, Level>> = listOf(
+        "affection" to v.affection,
+        "care" to v.care,
+        "humor" to v.humor,
+        "romance" to v.romance,
+        "expressiveness" to v.expressiveness,
+        "talkativeness" to v.talkativeness,
+        "initiative" to v.initiative,
+        "warmth" to v.warmth,
+        "softness" to v.softness,
+        "energy" to v.energy,
+        "pace" to v.pace,
+    )
 }

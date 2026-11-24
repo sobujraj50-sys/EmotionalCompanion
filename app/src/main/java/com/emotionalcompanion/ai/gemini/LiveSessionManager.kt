@@ -1,6 +1,6 @@
 package com.emotionalcompanion.ai.gemini
 
-import com.emotionalcompanion.ai.personality.DefaultPersonality
+import com.emotionalcompanion.ai.personality.PersonalityEngine
 import com.emotionalcompanion.core.audio.AudioCaptureManager
 import com.emotionalcompanion.core.audio.AudioFocusManager
 import com.emotionalcompanion.core.audio.AudioPlaybackManager
@@ -152,8 +152,8 @@ class LiveSessionManager(
             LiveSignal.Open -> connection?.send(
                 LiveProtocol.setupMessage(
                     modelId = config.liveModelId,
-                    voiceName = VoiceConfiguration.DEFAULT_VOICE,
-                    systemInstruction = DefaultPersonality.systemInstruction,
+                    voiceName = config.voiceName,
+                    systemInstruction = PersonalityEngine.build(config.personality),
                     resumptionHandle = resumptionHandle,
                 ),
             )

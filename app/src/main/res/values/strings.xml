@@ -55,8 +55,6 @@
 
     <!-- Voice -->
     <string name="voice_title">Voice</string>
-    <string name="voice_not_ready_title">Voice Studio is not built yet</string>
-    <string name="voice_not_ready_body">Choosing, previewing and fine-tuning the voice comes in a later milestone. Only voices that Google confirms for the live model will be offered.</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
@@ -162,4 +160,64 @@
     <string name="unit_minutes">%1$d min</string>
     <string name="unit_seconds">%1$d s</string>
     <string name="settings_limits_note">These limits help keep you inside the free quota. The minutes are counted on this phone. They are an estimate, not Google\'s billing data.</string>
+
+    <!-- Milestone E: Voice Studio and personality -->
+    <string name="voice_section_test_line">Test line (same for every voice)</string>
+    <string name="dialogue_bangla">বাংলা</string>
+    <string name="dialogue_english">English</string>
+    <string name="dialogue_mixed">Mixed</string>
+    <string name="voice_section_voices">Voices</string>
+    <string name="voice_busy_conversation">Stop the conversation on Home to listen to voices.</string>
+    <string name="voice_show_all">Show all 30 voices</string>
+    <string name="voice_show_fewer">Show suggested voices only</string>
+    <string name="voice_quota_note">Each sample is a short Gemini Live session. It uses a few seconds of your free quota and counts toward today\'s budget.</string>
+    <string name="voice_section_delivery">How she speaks</string>
+    <string name="pref_warmth">Warmth</string>
+    <string name="pref_softness">Softness</string>
+    <string name="pref_energy">Energy</string>
+    <string name="pref_pace">Speaking pace</string>
+    <string name="voice_delivery_note">These are style requests in her instructions, not exact controls. Listen to a sample to hear the effect.</string>
+    <string name="voice_section_personality">Personality</string>
+    <string name="voice_personality_body">Nickname, language, affection, humor, romance and more.</string>
+    <string name="voice_open_personality">Edit personality</string>
+    <string name="voice_section_offline">Offline phone voice</string>
+    <string name="voice_offline_body">Your phone\'s built-in voice. It works without internet, but it only reads text. It is not the AI. The app uses it to tell you when Gemini can\'t be reached.</string>
+    <string name="voice_offline_play">Listen to phone voice</string>
+    <string name="voice_offline_unavailable">This phone has no text-to-speech engine.</string>
+    <string name="voice_offline_no_bangla">The phone voice has no Bangla installed. Add Bangla in the phone\'s text-to-speech settings.</string>
+    <string name="voice_default">default</string>
+    <string name="voice_stop">Stop</string>
+    <string name="voice_listen">Listen</string>
+    <string name="voice_error_rejected">Gemini rejected this voice for the selected model. Try another voice or model.</string>
+    <string name="voice_error_generic">The sample could not be played.</string>
+    <string name="level_very_low">Very low</string>
+    <string name="level_low">Low</string>
+    <string name="level_medium">Medium</string>
+    <string name="level_high">High</string>
+    <string name="level_very_high">Very high</string>
+    <string name="personality_title">Personality</string>
+    <string name="personality_section_address">How she addresses you</string>
+    <string name="personality_nickname">Nickname for you</string>
+    <string name="personality_nickname_hint">e.g. জান</string>
+    <string name="personality_nickname_note">Leave empty for no nickname. Max 30 characters.</string>
+    <string name="personality_section_language">Language</string>
+    <string name="language_bangla_first">Mostly Bangla, some English</string>
+    <string name="language_mixed">Natural Bangla-English mix</string>
+    <string name="language_english_first">Mostly English, some Bangla</string>
+    <string name="personality_section_character">Character</string>
+    <string name="pref_affection">Affection</string>
+    <string name="pref_care">Care</string>
+    <string name="pref_humor">Humor</string>
+    <string name="pref_romance">Romantic tone</string>
+    <string name="pref_expressiveness">Emotional expressiveness</string>
+    <string name="pref_talkativeness">Talkativeness</string>
+    <string name="pref_initiative">Initiative</string>
+    <string name="personality_reset">Reset character to defaults</string>
+    <string name="personality_section_honesty">Always on</string>
+    <string name="personality_honesty_body">Whatever you choose above, she stays honest. She is an AI, never pretends to be your wife or any real person, never invents shared memories, never shows jealousy, and supports your real relationships. These rules can\'t be turned off.</string>
+    <string name="personality_show_instruction">Show the exact instruction sent to Gemini</string>
+    <string name="personality_hide_instruction">Hide instruction</string>
+    <string name="personality_applies_next">Changes apply from the next conversation.</string>
+    <string name="offline_spoken_notice">There is no internet right now, so I can\'t talk. Please check the connection and try again.</string>
+    <string name="is_bangla_locale">false</string>
 </resources>

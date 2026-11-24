@@ -15,7 +15,10 @@ import java.util.concurrent.atomic.AtomicLong
  * Streams the model's 24 kHz mono 16-bit PCM to an AudioTrack through a queue.
  * [clear] drops everything queued and already buffered (used for interruptions).
  */
-class AudioPlaybackManager {
+class AudioPlaybackManager(
+    /** VOICE_COMMUNICATION for conversations (works with echo cancellation), MEDIA for auditions. */
+    private val usage: Int = AudioAttributes.USAGE_VOICE_COMMUNICATION,
+) {
 
     private var track: AudioTrack? = null
     private var job: Job? = null
@@ -44,7 +47,7 @@ class AudioPlaybackManager {
             AudioTrack.Builder()
                 .setAudioAttributes(
                     AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
+                        .setUsage(usage)
                         .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build(),
                 )
