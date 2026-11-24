@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.emotionalcompanion.ai.gemini.GeminiModelCatalog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -24,15 +25,20 @@ class SettingsRepository(context: Context) {
         val OnboardingDone = booleanPreferencesKey("onboarding_done")
         val ThemeModeKey = stringPreferencesKey("theme_mode")
         val ReducedMotion = booleanPreferencesKey("reduced_motion")
+        val FreeOnly = booleanPreferencesKey("free_only")
+        val LiveModelId = stringPreferencesKey("live_model_id")
     }
 
     val settings: Flow<AppSettings> = dataStore.data
         .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
         .map { p ->
+            val freeOnly = p[Keys.FreeOnly] ?: true
             AppSettings(
                 onboardingDone = p[Keys.OnboardingDone] ?: false,
                 themeMode = ThemeMode.fromStorage(p[Keys.ThemeModeKey]),
                 reducedMotion = p[Keys.ReducedMotion] ?: false,
+                freeOnly = freeOnly,
+                liveModelId = GeminiModelCatalog.resolve(p[Keys.LiveModelId], freeOnly),
             )
         }
 
@@ -46,5 +52,13 @@ class SettingsRepository(context: Context) {
 
     suspend fun setReducedMotion(enabled: Boolean) {
         dataStore.edit { it[Keys.ReducedMotion] = enabled }
+    }
+
+    suspend fun setFreeOnly(enabled: Boolean) {
+        dataStore.edit { it[Keys.FreeOnly] = enabled }
+    }
+
+    suspend fun setLiveModelId(id: String) {
+        dataStore.edit { it[Keys.LiveModelId] = id }
     }
 }

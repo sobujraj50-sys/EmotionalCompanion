@@ -13,9 +13,10 @@ enum class ConversationState {
     Error,
 }
 
-/** Link to Gemini. NotConfigured holds until an API key is saved (Milestone C). */
+/** Link to Gemini. NotConfigured until an API key is saved; Configured = key saved, no live session. */
 enum class ConnectionStatus {
     NotConfigured,
+    Configured,
     Connecting,
     Connected,
     Reconnecting,

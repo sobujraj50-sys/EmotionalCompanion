@@ -52,9 +52,11 @@ import com.emotionalcompanion.domain.conversation.ConversationState
 @Composable
 fun SettingsScreen(
     container: AppContainer,
+    onOpenApiConfig: () -> Unit,
     viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.factory(container)),
 ) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val hasApiKey by container.secretStore.hasApiKey.collectAsStateWithLifecycle()
     var showOrbPreview by remember { mutableStateOf(false) }
 
     Column(
@@ -128,16 +130,26 @@ fun SettingsScreen(
         }
 
         SettingsSection(R.string.settings_section_gemini) {
-            Text(
-                text = stringResource(R.string.settings_api_key),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = stringResource(R.string.settings_api_key_pending),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp)
+                    .clickable(onClick = onOpenApiConfig)
+                    .padding(vertical = 4.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.settings_api_key),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = stringResource(
+                        if (hasApiKey) R.string.settings_api_key_saved else R.string.settings_api_key_missing,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
 
         SettingsSection(R.string.settings_section_testing) {

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Milestone A requests no permissions.
-         INTERNET and RECORD_AUDIO are added in Milestones C/D when they are actually used. -->
+    <!-- INTERNET: Gemini API (connection test from Milestone C, live audio from D).
+         RECORD_AUDIO is added in Milestone D, when the microphone is actually used. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".EmotionalCompanionApp"

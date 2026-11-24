@@ -21,6 +21,7 @@ fun ConversationState.labelRes(): Int = when (this) {
 @StringRes
 fun ConnectionStatus.labelRes(): Int = when (this) {
     ConnectionStatus.NotConfigured -> R.string.connection_not_configured
+    ConnectionStatus.Configured -> R.string.connection_configured
     ConnectionStatus.Connecting -> R.string.connection_connecting
     ConnectionStatus.Connected -> R.string.connection_connected
     ConnectionStatus.Reconnecting -> R.string.connection_reconnecting

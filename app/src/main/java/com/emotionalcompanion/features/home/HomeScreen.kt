@@ -36,24 +36,33 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.emotionalcompanion.R
+import com.emotionalcompanion.core.common.AppContainer
 import com.emotionalcompanion.core.designsystem.AppIcons
 import com.emotionalcompanion.core.designsystem.LocalReducedMotion
 import com.emotionalcompanion.core.designsystem.components.AmplitudeWaveform
 import com.emotionalcompanion.core.designsystem.components.VoiceOrb
 import com.emotionalcompanion.core.designsystem.components.labelRes
+import com.emotionalcompanion.domain.conversation.ConnectionStatus
 
 @Composable
 fun HomeScreen(
+    container: AppContainer,
     onOpenVoiceStudio: () -> Unit,
     onOpenSettings: () -> Unit,
-    viewModel: HomeViewModel = viewModel(),
+    onOpenApiConfig: () -> Unit,
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory(container)),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LifecycleResumeEffect(Unit) {
         viewModel.refreshTimeOfDay()
         onPauseOrDispose { }
     }
-    HomeContent(state = state, onOpenVoiceStudio = onOpenVoiceStudio, onOpenSettings = onOpenSettings)
+    HomeContent(
+        state = state,
+        onOpenVoiceStudio = onOpenVoiceStudio,
+        onOpenSettings = onOpenSettings,
+        onOpenApiConfig = onOpenApiConfig,
+    )
 }
 
 @Composable
@@ -61,6 +70,7 @@ private fun HomeContent(
     state: HomeUiState,
     onOpenVoiceStudio: () -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenApiConfig: () -> Unit,
 ) {
     val reducedMotion = LocalReducedMotion.current
     val stateLabel = stringResource(state.conversation.labelRes())
@@ -98,7 +108,7 @@ private fun HomeContent(
         Spacer(Modifier.height(8.dp))
         Row(Modifier.fillMaxWidth()) {
             AssistChip(
-                onClick = onOpenSettings,
+                onClick = onOpenApiConfig,
                 label = { Text(stringResource(state.connection.labelRes())) },
             )
         }
@@ -167,7 +177,10 @@ private fun HomeContent(
         if (!state.voiceAvailable) {
             Spacer(Modifier.height(12.dp))
             Text(
-                text = stringResource(R.string.home_voice_unavailable),
+                text = stringResource(
+                    if (state.connection == ConnectionStatus.NotConfigured) R.string.home_voice_needs_key
+                    else R.string.home_voice_unavailable,
+                ),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
