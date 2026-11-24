@@ -105,6 +105,11 @@ jobs:
           echo "APK_FILE=$out" >> "$GITHUB_ENV"
           echo "APK_VERSION=$version" >> "$GITHUB_ENV"
 
+      - name: Show APK signing certificate
+        run: |
+          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n 1)apksigner"
+          "$apksigner" verify --print-certs "$APK_FILE" | grep -E "Signer #1 certificate (DN|SHA-256)"
+
       - name: Publish to Releases
         env:
           GH_TOKEN: ${{ github.token }}

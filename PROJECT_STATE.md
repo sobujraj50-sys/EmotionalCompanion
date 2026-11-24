@@ -133,7 +133,7 @@ _Last updated: 2026-11-25, Milestone F (testing & APK). Phase 01 code complete_
 
 ## Blockers / open questions
 - Repo: https://github.com/sobujraj50-sys/EmotionalCompanion
-- Signing secrets aren't set. Until they are, each new APK requires uninstalling the previous one (and re-entering the API key).
+- The first release-signed APK needs **one** uninstall of the debug-signed app. After that, updates install in place.
 - `gemini-3.1-flash-live-preview` is labeled **legacy** on the models page. It is the only free-confirmed Live model besides the access-limited 2.5 native-audio preview. Re-check the pricing page before Milestone D, in case a 3.8 Live model gets a free tier.
 
 ## Known risks to check on the device
@@ -148,10 +148,9 @@ _Last updated: 2026-11-25, Milestone F (testing & APK). Phase 01 code complete_
 
 ## Decisions in F
 - **R8/minification stays off.** For a personal APK the size (≈14 MB) is fine, and minification can only be checked for crashes on a device. Turn it on in a later phase together with keep rules and a device test.
-- **Stable signing needs the user's go-ahead.** It requires creating a signing key and storing it as two repository secrets. Until then, each CI build uses a new debug key, so a new APK can't update the installed app.
+- **Stable release signing is on (2026-11-25).** Claude generated a release key (PKCS12, alias `ec`, RSA 2048, 10,000 days, SHA-256 `C9:FB:CC:19:85:12:3E:84:A4:B9:C1:55:7B:56:DC:E4:14:F5:1A:2B:E2:A1:4F:0D:1C:46:D6:B4:7A:20:C8:43`). The proxy blocked setting secrets, so the user added `KEYSTORE_BASE64` and `KEYSTORE_PASSWORD` himself, and he keeps the .jks backup. CI now builds `assembleRelease` signed with it, and the log prints the certificate fingerprint.
 
 ## Next steps
 1. User runs the C → D → E phone checklists with a real key and reports the results and any error "Details" line.
 2. Fix what the phone reveals (most likely: setup field placement, voice availability, echo tuning, audition reading the line verbatim).
-3. Stable signing secrets (after approval).
 4. Phase 02 (docs/ROADMAP.md): user-controlled memory, conversation retention via Room, mood journal, time-zone and reunion countdown.
