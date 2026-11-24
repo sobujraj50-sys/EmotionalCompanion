@@ -152,6 +152,61 @@ fun SettingsScreen(
             }
         }
 
+        SettingsSection(R.string.settings_section_conversation) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp)
+                    .toggleable(
+                        value = settings.voiceInterruption,
+                        onValueChange = viewModel::setVoiceInterruption,
+                        role = Role.Switch,
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.settings_voice_interruption),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = stringResource(R.string.settings_voice_interruption_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(checked = settings.voiceInterruption, onCheckedChange = null)
+            }
+            Spacer(Modifier.height(8.dp))
+            LimitChooser(
+                title = R.string.settings_session_length,
+                options = listOf(5, 10, 15, 30),
+                selected = settings.usageLimits.sessionMaxMinutes,
+                label = { stringResource(R.string.unit_minutes, it) },
+                onSelect = viewModel::setSessionMaxMinutes,
+            )
+            LimitChooser(
+                title = R.string.settings_daily_budget,
+                options = listOf(15, 30, 60, 120),
+                selected = settings.usageLimits.dailyBudgetMinutes,
+                label = { stringResource(R.string.unit_minutes, it) },
+                onSelect = viewModel::setDailyBudgetMinutes,
+            )
+            LimitChooser(
+                title = R.string.settings_idle_timeout,
+                options = listOf(30, 60, 120),
+                selected = settings.usageLimits.idleTimeoutSeconds,
+                label = { stringResource(R.string.unit_seconds, it) },
+                onSelect = viewModel::setIdleTimeoutSeconds,
+            )
+            Text(
+                text = stringResource(R.string.settings_limits_note),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
         SettingsSection(R.string.settings_section_testing) {
             Column(
                 modifier = Modifier
@@ -273,6 +328,31 @@ private fun FlowChips(selected: ConversationState, onSelect: (ConversationState)
                     label = { Text(stringResource(state.labelRes()), style = MaterialTheme.typography.labelMedium) },
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun LimitChooser(
+    @StringRes title: Int,
+    options: List<Int>,
+    selected: Int,
+    label: @Composable (Int) -> String,
+    onSelect: (Int) -> Unit,
+) {
+    Text(
+        text = stringResource(title),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.padding(top = 8.dp),
+    )
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        options.forEach { value ->
+            FilterChip(
+                selected = value == selected,
+                onClick = { onSelect(value) },
+                label = { Text(label(value)) },
+            )
         }
     }
 }

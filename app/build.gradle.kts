@@ -21,7 +21,7 @@ android {
         targetSdk = 36
         // CI passes -PversionCode=<run number> so every build installs as an update.
         versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
-        versionName = "0.3.0-mC"
+        versionName = "0.4.0-mD"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.okhttp)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

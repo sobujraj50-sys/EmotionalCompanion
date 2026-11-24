@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- INTERNET: Gemini API (connection test from Milestone C, live audio from D).
-         RECORD_AUDIO is added in Milestone D, when the microphone is actually used. -->
+    <!-- INTERNET: Gemini API. RECORD_AUDIO: only while the user runs a conversation
+         (asked at first use, never in the background). MODIFY_AUDIO_SETTINGS: speaker/earpiece
+         routing and communication mode for echo cancellation. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:name=".EmotionalCompanionApp"

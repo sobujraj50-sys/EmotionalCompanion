@@ -27,6 +27,22 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
         viewModelScope.launch { repository.setReducedMotion(enabled) }
     }
 
+    fun setVoiceInterruption(enabled: Boolean) {
+        viewModelScope.launch { repository.setVoiceInterruption(enabled) }
+    }
+
+    fun setSessionMaxMinutes(minutes: Int) {
+        viewModelScope.launch { repository.setSessionMaxMinutes(minutes) }
+    }
+
+    fun setDailyBudgetMinutes(minutes: Int) {
+        viewModelScope.launch { repository.setDailyBudgetMinutes(minutes) }
+    }
+
+    fun setIdleTimeoutSeconds(seconds: Int) {
+        viewModelScope.launch { repository.setIdleTimeoutSeconds(seconds) }
+    }
+
     companion object {
         fun factory(container: AppContainer): ViewModelProvider.Factory = viewModelFactory {
             initializer { SettingsViewModel(container.settingsRepository) }

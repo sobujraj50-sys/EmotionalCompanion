@@ -29,12 +29,10 @@
     <string name="orb_description_idle">Voice orb, resting</string>
     <string name="waveform_silent">Audio level: no audio</string>
     <string name="waveform_active">Audio level: live</string>
-    <string name="control_speaker">Speaker</string>
     <string name="control_mic_start">Start talking</string>
     <string name="control_voice">Choose voice</string>
-    <string name="home_voice_unavailable">Voice chat will work after the Gemini API key is set up and the live audio engine is added.</string>
-    <string name="home_recent_title">Recent conversation</string>
-    <string name="home_recent_empty">No conversations yet.</string>
+    <string name="home_recent_title">This conversation</string>
+    <string name="home_recent_empty">Captions will appear here while you talk.</string>
 
     <!-- Conversation states -->
     <string name="state_idle">Resting</string>
@@ -124,4 +122,44 @@
     <string name="api_free_only_body">Only offers models with a confirmed free tier, and never switches to a paid model by itself. Real billing protection also depends on your Google Cloud project: if billing is never turned on there, you can\'t be charged.</string>
     <string name="api_section_privacy">Privacy</string>
     <string name="api_privacy_body">Your key is stored only on this phone, encrypted, excluded from backups, and never written to logs. This screen blocks screenshots. On Google\'s free tier, Google may use what you send to improve its products. Because the key lives in the app, this setup is meant for your personal phone only.</string>
+
+    <!-- Milestone D: live conversation -->
+    <string name="action_ok">OK</string>
+    <string name="disclosure_title">Before your first conversation</string>
+    <string name="disclosure_body">While a conversation is running, your voice is streamed to Google Gemini so the AI can hear and answer you. Nothing is sent when the microphone is off. On Google\'s free tier, Google may use what you send to improve its products. Conversations are not saved in this app.</string>
+    <string name="disclosure_accept">I understand</string>
+    <string name="orb_tap_to_interrupt">Tap the orb to stop her speaking</string>
+    <string name="session_timer">%1$s of %2$d min</string>
+    <string name="control_speaker_on">Loudspeaker on</string>
+    <string name="control_speaker_off">Loudspeaker off (earpiece or headset)</string>
+    <string name="control_mic_stop">Stop conversation</string>
+    <string name="home_half_duplex">Microphone is on. It pauses while she speaks, to avoid echo. Tap ✕ to stop.</string>
+    <string name="home_mic_live">Microphone is on. Speak naturally, and you can interrupt her. Tap ✕ to stop.</string>
+    <string name="home_tap_to_talk">Tap the microphone to start talking.</string>
+    <string name="usage_today">Today: %1$d of %2$d min (counted on this phone)</string>
+    <string name="transcript_you">You: %1$s</string>
+    <string name="transcript_companion">Companion: %1$s</string>
+    <string name="transcript_not_saved">Captions disappear when the app closes. Nothing is saved.</string>
+    <string name="error_detail">Details: %1$s</string>
+    <string name="live_error_not_configured">Add your Gemini API key first.</string>
+    <string name="live_error_mic_permission">Microphone permission is needed to talk. You can allow it in the phone\'s app settings.</string>
+    <string name="live_error_mic_unavailable">The microphone could not be opened. Another app may be using it.</string>
+    <string name="live_error_audio_busy">Audio is busy (for example, a phone call is in progress).</string>
+    <string name="live_error_invalid_setup">Gemini rejected the session settings. Try another model in Settings → API key.</string>
+    <string name="live_error_connection_lost">The connection was lost. Tap the microphone to start again.</string>
+    <string name="live_error_unknown">Something went wrong with the conversation.</string>
+    <string name="end_session_limit">The session reached its time limit. Tap the microphone to start a new one.</string>
+    <string name="end_daily_budget">Today\'s conversation budget is used up. You can change it in Settings.</string>
+    <string name="end_idle">The conversation ended after a quiet moment, to save your free quota.</string>
+    <string name="end_focus_lost">The conversation stopped because another app needed the audio.</string>
+    <string name="end_background">The conversation stopped when you left the app.</string>
+    <string name="settings_section_conversation">Conversation</string>
+    <string name="settings_voice_interruption">Interrupt by speaking</string>
+    <string name="settings_voice_interruption_body">Keeps the microphone open while she speaks, so you can cut in. If your phone has no echo cancellation, the app pauses the microphone instead.</string>
+    <string name="settings_session_length">Maximum session length</string>
+    <string name="settings_daily_budget">Daily conversation budget</string>
+    <string name="settings_idle_timeout">End after silence</string>
+    <string name="unit_minutes">%1$d min</string>
+    <string name="unit_seconds">%1$d s</string>
+    <string name="settings_limits_note">These limits help keep you inside the free quota. The minutes are counted on this phone. They are an estimate, not Google\'s billing data.</string>
 </resources>

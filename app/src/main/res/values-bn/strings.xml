@@ -27,12 +27,10 @@
     <string name="orb_description_idle">ভয়েস অর্ব, বিশ্রামে</string>
     <string name="waveform_silent">অডিও লেভেল: কোনো শব্দ নেই</string>
     <string name="waveform_active">অডিও লেভেল: চলছে</string>
-    <string name="control_speaker">স্পিকার</string>
     <string name="control_mic_start">কথা বলা শুরু করুন</string>
     <string name="control_voice">ভয়েস বাছাই</string>
-    <string name="home_voice_unavailable">Gemini API key সেটআপ আর লাইভ অডিও ইঞ্জিন যোগ হলে ভয়েস চ্যাট কাজ করবে।</string>
-    <string name="home_recent_title">সাম্প্রতিক কথোপকথন</string>
-    <string name="home_recent_empty">এখনো কোনো কথোপকথন হয়নি।</string>
+    <string name="home_recent_title">এই কথোপকথন</string>
+    <string name="home_recent_empty">কথা বলার সময় লেখাগুলো এখানে দেখা যাবে।</string>
 
     <string name="state_idle">বিশ্রামে</string>
     <string name="state_connecting">সংযোগ হচ্ছে…</string>
@@ -118,4 +116,44 @@
     <string name="api_free_only_body">শুধু নিশ্চিত ফ্রি টিয়ারের মডেল দেখায়, আর নিজে থেকে কখনো পেইড মডেলে যায় না। আসল বিলিং সুরক্ষা আপনার Google Cloud প্রজেক্টের ওপরও নির্ভর করে: সেখানে billing কখনো চালু না করলে আপনার কোনো খরচ হবে না।</string>
     <string name="api_section_privacy">প্রাইভেসি</string>
     <string name="api_privacy_body">আপনার key শুধু এই ফোনে এনক্রিপ্ট করে রাখা হয়। ব্যাকআপে যায় না, লগে লেখা হয় না। এই স্ক্রিনে screenshot নেওয়া যায় না। Google-এর ফ্রি টিয়ারে আপনার পাঠানো তথ্য Google তাদের পণ্য উন্নত করতে ব্যবহার করতে পারে। key অ্যাপের ভেতরে থাকে বলে এই ব্যবস্থা শুধু আপনার ব্যক্তিগত ফোনের জন্য।</string>
+
+    <!-- Milestone D: live conversation -->
+    <string name="action_ok">ঠিক আছে</string>
+    <string name="disclosure_title">প্রথম কথোপকথনের আগে</string>
+    <string name="disclosure_body">কথোপকথন চলার সময় আপনার কণ্ঠ Google Gemini-তে পাঠানো হয়, যাতে AI শুনে উত্তর দিতে পারে। মাইক্রোফোন বন্ধ থাকলে কিছুই পাঠানো হয় না। Google-এর ফ্রি টিয়ারে আপনার পাঠানো তথ্য Google তাদের পণ্য উন্নত করতে ব্যবহার করতে পারে। এই অ্যাপে কোনো কথোপকথন সেভ হয় না।</string>
+    <string name="disclosure_accept">বুঝেছি</string>
+    <string name="orb_tap_to_interrupt">তার কথা থামাতে অর্বে ট্যাপ করুন</string>
+    <string name="session_timer">%1$s / %2$d মিনিট</string>
+    <string name="control_speaker_on">লাউডস্পিকার চালু</string>
+    <string name="control_speaker_off">লাউডস্পিকার বন্ধ (ইয়ারপিস বা হেডসেট)</string>
+    <string name="control_mic_stop">কথোপকথন বন্ধ করুন</string>
+    <string name="home_half_duplex">মাইক্রোফোন চালু। ইকো এড়াতে সে কথা বলার সময় মাইক থেমে থাকে। বন্ধ করতে ✕ চাপুন।</string>
+    <string name="home_mic_live">মাইক্রোফোন চালু। স্বাভাবিকভাবে কথা বলুন, মাঝখানে থামাতেও পারবেন। বন্ধ করতে ✕ চাপুন।</string>
+    <string name="home_tap_to_talk">কথা বলা শুরু করতে মাইক্রোফোনে ট্যাপ করুন।</string>
+    <string name="usage_today">আজ: %2$d মিনিটের মধ্যে %1$d মিনিট (এই ফোনে গোনা)</string>
+    <string name="transcript_you">আপনি: %1$s</string>
+    <string name="transcript_companion">সঙ্গী: %1$s</string>
+    <string name="transcript_not_saved">অ্যাপ বন্ধ করলে লেখাগুলো মুছে যায়। কিছুই সেভ হয় না।</string>
+    <string name="error_detail">বিস্তারিত: %1$s</string>
+    <string name="live_error_not_configured">আগে আপনার Gemini API key যোগ করুন।</string>
+    <string name="live_error_mic_permission">কথা বলতে মাইক্রোফোনের অনুমতি লাগবে। ফোনের অ্যাপ সেটিংস থেকে অনুমতি দিতে পারবেন।</string>
+    <string name="live_error_mic_unavailable">মাইক্রোফোন খোলা গেল না। হয়তো অন্য কোনো অ্যাপ এটা ব্যবহার করছে।</string>
+    <string name="live_error_audio_busy">অডিও এখন ব্যস্ত (যেমন, ফোন কল চলছে)।</string>
+    <string name="live_error_invalid_setup">Gemini সেশনের সেটিংস গ্রহণ করেনি। Settings → API key থেকে অন্য মডেল বেছে দেখুন।</string>
+    <string name="live_error_connection_lost">সংযোগ বিচ্ছিন্ন হয়েছে। আবার শুরু করতে মাইক্রোফোনে ট্যাপ করুন।</string>
+    <string name="live_error_unknown">কথোপকথনে কিছু একটা সমস্যা হয়েছে।</string>
+    <string name="end_session_limit">সেশনের সময়সীমা শেষ। নতুন সেশন শুরু করতে মাইক্রোফোনে ট্যাপ করুন।</string>
+    <string name="end_daily_budget">আজকের কথোপকথনের বাজেট শেষ। Settings থেকে বদলাতে পারবেন।</string>
+    <string name="end_idle">কিছুক্ষণ চুপচাপ থাকায় কথোপকথন শেষ হয়েছে, যাতে আপনার ফ্রি কোটা বাঁচে।</string>
+    <string name="end_focus_lost">অন্য একটি অ্যাপের অডিও লাগায় কথোপকথন থেমে গেছে।</string>
+    <string name="end_background">অ্যাপ থেকে বেরিয়ে যাওয়ায় কথোপকথন থেমে গেছে।</string>
+    <string name="settings_section_conversation">কথোপকথন</string>
+    <string name="settings_voice_interruption">কথা বলে থামানো</string>
+    <string name="settings_voice_interruption_body">সে কথা বলার সময়ও মাইক্রোফোন খোলা থাকে, যাতে আপনি মাঝখানে কথা বলতে পারেন। ফোনে ইকো ক্যানসেলেশন না থাকলে অ্যাপ তখন মাইক্রোফোন থামিয়ে রাখে।</string>
+    <string name="settings_session_length">সেশনের সর্বোচ্চ দৈর্ঘ্য</string>
+    <string name="settings_daily_budget">দৈনিক কথোপকথনের বাজেট</string>
+    <string name="settings_idle_timeout">চুপচাপ থাকলে শেষ</string>
+    <string name="unit_minutes">%1$d মিনিট</string>
+    <string name="unit_seconds">%1$d সেকেন্ড</string>
+    <string name="settings_limits_note">এই সীমাগুলো আপনাকে ফ্রি কোটার মধ্যে রাখতে সাহায্য করে। মিনিটগুলো এই ফোনে গোনা হয়। এটা একটা আনুমানিক হিসাব, Google-এর বিলিং তথ্য নয়।</string>
 </resources>

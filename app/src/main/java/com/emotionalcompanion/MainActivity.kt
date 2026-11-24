@@ -16,6 +16,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.emotionalcompanion.ai.gemini.SessionEndReason
 import com.emotionalcompanion.core.designsystem.EmotionalCompanionTheme
 import com.emotionalcompanion.core.designsystem.LocalReducedMotion
 import com.emotionalcompanion.data.settings.ThemeMode
@@ -26,6 +27,12 @@ class MainActivity : ComponentActivity() {
 
     private val container by lazy { (application as EmotionalCompanionApp).container }
     private val mainViewModel: MainViewModel by viewModels { MainViewModel.factory(container) }
+
+    override fun onStop() {
+        super.onStop()
+        // No hidden recording: leaving the app ends the conversation and releases the mic.
+        if (!isChangingConfigurations) container.stopLiveSession(SessionEndReason.AppInBackground)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
