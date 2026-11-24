@@ -1,12 +1,12 @@
 # PROJECT_STATE
 
-_Last updated: 2026-11-24, Milestone A (foundation)_
+_Last updated: 2026-11-24, Milestone B (design & navigation)_
 
 ## Current status
 | Milestone | State |
 |---|---|
-| A: Environment & foundation | **CI build green (build 1). Waiting for phone test** |
-| B: Design & navigation | Not started |
+| A: Environment & foundation | ✅ Done (CI green, opened on the user's phone 2026-11-24) |
+| B: Design & navigation | **CI build green (build 2). Waiting for phone test** |
 | C: Secure API configuration | Not started |
 | D: Live audio prototype | Not started |
 | E: Emotional Voice Studio | Not started |
@@ -25,6 +25,17 @@ _Last updated: 2026-11-24, Milestone A (foundation)_
 - Backup and device transfer disabled for all app data. No permissions requested
 - Docs: README, CLAUDE.md, this file, `docs/*`
 
+## Milestone B: what exists
+- Settings in DataStore: theme (**Dark default**, Light, Follow phone), reduced motion, onboarding done
+- 3-page onboarding (welcome, AI honesty, privacy/microphone control), shown once
+- Bottom navigation: Home · Voice · Settings
+- Home: app name, time-of-day greeting, connection chip, voice orb, state label, waveform, speaker/mic/voice controls, recent-conversation card, AI notice
+- `VoiceOrb`: 9 states (Idle, Connecting, Listening, Thinking, Speaking, Interrupted, Reconnecting, Offline, Error). Size follows real amplitude only. Reduce-motion stops all looping animation
+- `AmplitudeWaveform`: draws real levels only. Flat baseline while no audio exists
+- Honest gaps: mic and speaker buttons are disabled with an explanation; the Voice tab says the Studio isn't built; the API key row says it comes in Milestone C
+- Settings → Testing → Orb animation preview: shows each state with a hand-set level, clearly labeled as a test tool
+- Unit tests: `TimeOfDayTest` (3), `ThemeModeTest` (3), plus `PcmAudioFormatTest` (5)
+
 ## Verification record
 | Check | Where | Result |
 |---|---|---|
@@ -34,9 +45,11 @@ _Last updated: 2026-11-24, Milestone A (foundation)_
 | `testDebugUnitTest` | GitHub Actions run 45433695447 (2026-11-24) | ✅ BUILD SUCCESSFUL |
 | `lintDebug` | same run | ✅ BUILD SUCCESSFUL |
 | `assembleDebug` (no signing secrets) | same run | ✅ BUILD SUCCESSFUL, `EmotionalCompanion-0.1.0-mA-build1.apk` (11.7 MB) in Release `v0.1.0-mA-build1` |
-| Install & launch on phone | Physical device | ⏳ **Not yet run** |
+| Milestone A install & launch | User's phone (screenshot) | ✅ |
+| Milestone B: `testDebugUnitTest`, `lintDebug`, `assembleDebug` | GitHub Actions run 45442019853 | ✅ BUILD SUCCESSFUL ×3, Release `v0.2.0-mB-build2` |
+| Milestone B on phone | Physical device | ⏳ **Not yet run** |
 
-Milestone A is done once the APK opens on the phone (checklist in docs/TESTING.md).
+Milestone B is done once the phone checklist in docs/TESTING.md passes.
 
 ## Decisions
 1. **Build on GitHub Actions**, the same way as the user's other apps. ZIP upload → unpack → test → lint → APK → Release.
@@ -51,4 +64,4 @@ Milestone A is done once the APK opens on the phone (checklist in docs/TESTING.m
 - Signing secrets aren't set. Until they are, each new APK requires uninstalling the previous one.
 
 ## Next milestone
-**B: Design & navigation.** Onboarding, Home Screen layout, bottom navigation, voice-orb state machine and animation (driven by real state only), Settings foundation, reduced-motion option.
+**C: Secure API configuration.** In-app Gemini API key screen (show/hide, save, replace, remove), Keystore-backed encryption, connection test, model selection from verified IDs, free-only preference, INTERNET permission.

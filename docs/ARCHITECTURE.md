@@ -6,7 +6,7 @@ Single Gradle module (`:app`), layered by package. MVVM with unidirectional data
 ```
 com.emotionalcompanion
 ├── core/
-│   ├── designsystem/   colors, type, theme, shared components        [A ✅]
+│   ├── designsystem/   colors, type, theme, icons, VoiceOrb, waveform [A ✅ · B ✅]
 │   ├── audio/          PCM format, capture, playback, focus           [A: PcmAudioFormat ✅ · D]
 │   ├── network/        WebSocket client wrapper                       [D]
 │   ├── security/       Keystore-backed secret storage                 [C]
@@ -16,9 +16,10 @@ com.emotionalcompanion
 │   ├── gemini/         Gemini Live implementation                     [D]
 │   ├── personality/    PersonalityEngine → system instruction         [E]
 │   └── emotion/        Emotional preference model                     [E]
-├── data/ · domain/     repositories, models, use cases                [C+]
-├── features/           home, onboarding, conversation, voicestudio, personality, settings  [A: foundation screen · B+]
-├── navigation/                                                        [B]
+├── data/settings      DataStore UI preferences                       [B ✅]
+├── domain/conversation ConversationState, ConnectionStatus           [B ✅]
+├── features/           onboarding, home, voicestudio (stub notice), settings [B ✅] · conversation, personality [D/E]
+├── navigation/         bottom-bar NavHost                             [B ✅]
 └── service/            foreground mic service (future phase)
 ```
 Packages appear only when they get real code (CLAUDE.md rule).
