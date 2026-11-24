@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name kept in English while the name is temporary. Present here so lint's MissingTranslation check passes. -->
+    <string name="app_name">Emotional Companion</string>
+    <string name="foundation_title">Emotional Companion</string>
+    <string name="foundation_subtitle">ফাউন্ডেশন বিল্ড · মাইলস্টোন A</string>
+    <string name="foundation_body">প্রজেক্টটি বিল্ড হয় ও চলে। ভয়েস কথোপকথন এখনো চালু নয়। মাইলস্টোন C-তে নিরাপদ API key সেটআপের পর মাইলস্টোন D-তে এটি আসবে।</string>
+    <string name="foundation_ai_notice">এটি একটি AI সঙ্গী। এটি কোনো বাস্তব মানুষ নয়।</string>
+</resources>

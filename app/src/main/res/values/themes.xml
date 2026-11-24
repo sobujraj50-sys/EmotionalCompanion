@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Platform theme only; all UI theming happens in Compose. -->
+    <style name="Theme.EmotionalCompanion" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/midnight</item>
+    </style>
+</resources>

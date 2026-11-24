@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Emotional Companion</string>
+    <string name="foundation_title">Emotional Companion</string>
+    <string name="foundation_subtitle">Foundation build · Milestone A</string>
+    <string name="foundation_body">The project builds and runs. Voice conversation is not available yet. It arrives in Milestone D after secure API key setup in Milestone C.</string>
+    <string name="foundation_ai_notice">This app is an AI companion. It is not a real person.</string>
+</resources>

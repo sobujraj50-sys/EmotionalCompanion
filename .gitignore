@@ -1,0 +1,37 @@
+# Gradle / build
+.gradle/
+build/
+**/build/
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.navigation/
+
+# Local machine config (contains SDK path)
+local.properties
+
+# Signing material
+*.jks
+*.keystore
+keystore.properties
+
+# Secrets — never commit API keys
+secrets.properties
+*.env
+.env*
+google-services.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Keep the Gradle wrapper jar
+!gradle/wrapper/gradle-wrapper.jar

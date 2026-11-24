@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used only by the window theme and launcher icon; Compose uses core/designsystem/Color.kt -->
+    <color name="midnight">#FF100D1C</color>
+    <color name="royal_purple">#FF7840B8</color>
+    <color name="orchid">#FFD780DB</color>
+</resources>
