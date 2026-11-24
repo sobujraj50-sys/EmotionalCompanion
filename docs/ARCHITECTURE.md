@@ -9,11 +9,11 @@ com.emotionalcompanion
 │   ├── designsystem/   colors, type, theme, icons, VoiceOrb, waveform [A ✅ · B ✅]
 │   ├── audio/          PCM format, capture, playback, focus           [A: PcmAudioFormat ✅ · D]
 │   ├── network/        WebSocket client wrapper                       [D]
-│   ├── security/       Keystore-backed secret storage                 [C]
+│   ├── security/       SecretStore, KeystoreSecretStore, ApiKeyValidator [C ✅]
 │   └── common/         AppContainer (DI), dispatchers, result types   [A ✅]
 ├── ai/
 │   ├── provider/       Provider-neutral interfaces (LiveVoiceProvider)[D]
-│   ├── gemini/         Gemini Live implementation                     [D]
+│   ├── gemini/         model catalog, connection tester [C ✅] · Live client [D]
 │   ├── personality/    PersonalityEngine → system instruction         [E]
 │   └── emotion/        Emotional preference model                     [E]
 ├── data/settings      DataStore UI preferences                       [B ✅]

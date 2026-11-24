@@ -8,13 +8,16 @@
 - Private relationship details (nicknames, personal notes) go into the system instruction only through settings the user controls and can see.
 - Logs never contain the API key, raw audio, or transcript text.
 
-## Current state (Milestone A)
-- No permissions requested. No network or microphone code.
+## Current state (Milestone C)
+- Permissions: `INTERNET` only. No microphone code yet.
+- The only network call is the user-triggered connection test (`models.get`). It sends the API key and model name to Google, and no audio or personal text.
 - `allowBackup="false"` plus data-extraction rules exclude every domain from cloud backup and device transfer.
 
-## API key (from Milestone C)
-- Entered in-app, encrypted with an AES key held in Android Keystore, and stored in app-private storage.
+## API key
+- Entered in-app, encrypted (AES-256-GCM) with a key held in Android Keystore, and stored in app-private storage that backups exclude.
+- The key is never shown again after saving, never logged, and the API screen sets `FLAG_SECURE` (no screenshots or screen recording).
+- The key travels as a `?key=` URL parameter over HTTPS (Google's documented method). The URL and exception messages are never logged.
 - **Limitation:** with a direct client-side key, anyone with root or debug access to the phone could recover it in use. That is acceptable for a personal APK on the user's own device, but not for distribution. A distributed build must use a backend or Gemini **ephemeral tokens** (recommended by Google's Live API docs).
 
 ## Provider data handling
-Google's data-use terms differ between free and paid Gemini API tiers. Free-tier content may be used to improve Google products. The exact current wording will be quoted with date in Milestone C from https://ai.google.dev/gemini-api/terms, before any audio is sent.
+Per Google's pricing page (checked 2026-11-24), content sent on the **free tier is used to improve Google's products**, and paid-tier content is not. The app says this on the API screen. Before Milestone D sends any audio, the onboarding/conversation disclosure must repeat it.
