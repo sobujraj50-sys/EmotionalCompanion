@@ -12,9 +12,9 @@
 |---|---|---|---|
 | 2026-11-24 | Cloud workspace | Gradle wrapper generation | ✅ |
 | 2026-11-24 | Cloud workspace | XML well-formedness of manifest and resources | ✅ |
-| — | GitHub Actions | `testDebugUnitTest` | ⏳ pending first run |
-| — | GitHub Actions | `lintDebug` | ⏳ pending first run |
-| — | GitHub Actions | `assembleDebug` / `assembleRelease` | ⏳ pending first run |
+| 2026-11-24 | GitHub Actions (build 1) | `testDebugUnitTest` | ✅ |
+| 2026-11-24 | GitHub Actions (build 1) | `lintDebug` | ✅ |
+| 2026-11-24 | GitHub Actions (build 1) | `assembleDebug` | ✅ APK in Release v0.1.0-mA-build1 |
 
 ## Physical-device checklist: Milestone A
 - [ ] APK from GitHub Releases downloads and installs

@@ -5,7 +5,7 @@ _Last updated: 2026-11-24, Milestone A (foundation)_
 ## Current status
 | Milestone | State |
 |---|---|
-| A: Environment & foundation | **Code complete. Waiting for first GitHub Actions build** |
+| A: Environment & foundation | **CI build green (build 1). Waiting for phone test** |
 | B: Design & navigation | Not started |
 | C: Secure API configuration | Not started |
 | D: Live audio prototype | Not started |
@@ -31,10 +31,12 @@ _Last updated: 2026-11-24, Milestone A (foundation)_
 | Environment inspection | Claude's cloud workspace | JDK 21, Gradle 8.14.3, no Android SDK, no dependency downloads |
 | Wrapper generation | Cloud workspace (offline) | ✅ |
 | XML / TOML well-formedness, catalog references, secret scan | Cloud workspace | ✅ |
-| `testDebugUnitTest`, `lintDebug`, `assemble*` | GitHub Actions | ⏳ **Not yet run** |
+| `testDebugUnitTest` | GitHub Actions run 45433695447 (2026-11-24) | ✅ BUILD SUCCESSFUL |
+| `lintDebug` | same run | ✅ BUILD SUCCESSFUL |
+| `assembleDebug` (no signing secrets) | same run | ✅ BUILD SUCCESSFUL, `EmotionalCompanion-0.1.0-mA-build1.apk` (11.7 MB) in Release `v0.1.0-mA-build1` |
 | Install & launch on phone | Physical device | ⏳ **Not yet run** |
 
-Milestone A is **not** done until the GitHub Actions run is green and the APK opens on the phone.
+Milestone A is done once the APK opens on the phone (checklist in docs/TESTING.md).
 
 ## Decisions
 1. **Build on GitHub Actions**, the same way as the user's other apps. ZIP upload → unpack → test → lint → APK → Release.
@@ -45,7 +47,7 @@ Milestone A is **not** done until the GitHub Actions run is green and the APK op
 6. **Single `:app` module with package-level layering** ("start manageable", spec §5).
 
 ## Blockers / open questions
-- The GitHub repository doesn't exist yet. The user creates it, and then the first build runs.
+- Repo: https://github.com/sobujraj50-sys/EmotionalCompanion
 - Signing secrets aren't set. Until they are, each new APK requires uninstalling the previous one.
 
 ## Next milestone
