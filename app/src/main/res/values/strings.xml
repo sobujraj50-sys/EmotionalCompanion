@@ -1,8 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Emotional Companion</string>
-    <string name="foundation_title">Emotional Companion</string>
-    <string name="foundation_subtitle">Foundation build · Milestone A</string>
-    <string name="foundation_body">The project builds and runs. Voice conversation is not available yet. It arrives in Milestone D after secure API key setup in Milestone C.</string>
-    <string name="foundation_ai_notice">This app is an AI companion. It is not a real person.</string>
+    <string name="ai_notice">This app is an AI companion. It is not a real person.</string>
+    <string name="action_close">Close</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_voice">Voice</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Welcome</string>
+    <string name="onboarding_welcome_body">A warm voice companion for the long days and quiet evenings, in Bangla and English.</string>
+    <string name="onboarding_ai_title">Honest by design</string>
+    <string name="onboarding_ai_body">Your companion is an AI. It will never pretend to be your wife or any real person. It is here to support your real relationship, never to replace it.</string>
+    <string name="onboarding_privacy_title">You stay in control</string>
+    <string name="onboarding_privacy_body">The microphone turns on only when you tap it, and you can stop it at any moment. Once voice chat is ready, your speech is sent to Google Gemini only during a conversation you start.</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Get started</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+    <string name="greeting_night">It\'s late. Rest well.</string>
+    <string name="orb_description">Voice orb: %1$s</string>
+    <string name="orb_description_idle">Voice orb, resting</string>
+    <string name="waveform_silent">Audio level: no audio</string>
+    <string name="waveform_active">Audio level: live</string>
+    <string name="control_speaker">Speaker</string>
+    <string name="control_mic_start">Start talking</string>
+    <string name="control_voice">Choose voice</string>
+    <string name="home_voice_unavailable">Voice chat will work after the Gemini API key is set up and the live audio engine is added.</string>
+    <string name="home_recent_title">Recent conversation</string>
+    <string name="home_recent_empty">No conversations yet.</string>
+
+    <!-- Conversation states -->
+    <string name="state_idle">Resting</string>
+    <string name="state_connecting">Connecting…</string>
+    <string name="state_listening">Listening</string>
+    <string name="state_thinking">Thinking…</string>
+    <string name="state_speaking">Speaking</string>
+    <string name="state_interrupted">Interrupted</string>
+    <string name="state_reconnecting">Reconnecting…</string>
+    <string name="state_offline">Offline</string>
+    <string name="state_error">Something went wrong</string>
+
+    <!-- Connection status -->
+    <string name="connection_not_configured">Gemini not set up</string>
+    <string name="connection_connecting">Connecting to Gemini</string>
+    <string name="connection_connected">Connected</string>
+    <string name="connection_reconnecting">Reconnecting</string>
+    <string name="connection_offline">No internet</string>
+    <string name="connection_error">Connection error</string>
+
+    <!-- Voice -->
+    <string name="voice_title">Voice</string>
+    <string name="voice_not_ready_title">Voice Studio is not built yet</string>
+    <string name="voice_not_ready_body">Choosing, previewing and fine-tuning the voice comes in a later milestone. Only voices that Google confirms for the live model will be offered.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_theme">Theme</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_system">Follow phone</string>
+    <string name="settings_reduced_motion">Reduce motion</string>
+    <string name="settings_reduced_motion_body">Stops looping animations. The orb changes color only.</string>
+    <string name="settings_section_gemini">Gemini</string>
+    <string name="settings_api_key">API key</string>
+    <string name="settings_api_key_pending">Secure API key setup comes in the next milestone.</string>
+    <string name="settings_section_testing">Testing</string>
+    <string name="settings_orb_preview">Orb animation preview</string>
+    <string name="settings_orb_preview_body">See every orb state. Test tool only.</string>
+    <string name="orb_preview_level">Test level (set by hand, not real audio)</string>
+    <string name="settings_section_about">About</string>
+    <string name="settings_version">Version %1$s</string>
 </resources>

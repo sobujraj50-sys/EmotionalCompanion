@@ -5,42 +5,74 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
+import com.emotionalcompanion.data.settings.ThemeMode
 
 private val DarkColors = darkColorScheme(
     primary = Orchid,
     onPrimary = Midnight,
+    primaryContainer = RoyalPurple,
+    onPrimaryContainer = Pearl,
     secondary = SoftRose,
     onSecondary = Midnight,
+    secondaryContainer = DeepSurfaceHigh,
+    onSecondaryContainer = Pearl,
     tertiary = RoyalPurple,
     onTertiary = Pearl,
     background = Midnight,
     onBackground = Pearl,
-    surface = DeepSurface,
+    surface = Midnight,
     onSurface = Pearl,
+    surfaceVariant = DeepSurface,
     onSurfaceVariant = PearlMuted,
+    surfaceContainerLowest = Midnight,
+    surfaceContainerLow = DeepSurface,
+    surfaceContainer = DeepSurface,
+    surfaceContainerHigh = DeepSurfaceHigh,
+    surfaceContainerHighest = DeepSurfaceHigh,
+    outline = OutlineDark,
+    outlineVariant = OutlineVariantDark,
+    error = ErrorRose,
 )
 
 private val LightColors = lightColorScheme(
     primary = RoyalPurple,
     onPrimary = Pearl,
+    primaryContainer = Pearl,
+    onPrimaryContainer = InkPurple,
     secondary = Orchid,
     onSecondary = InkPurple,
     tertiary = SoftRose,
     onTertiary = InkPurple,
     background = LightBackground,
     onBackground = InkPurple,
-    surface = LightSurface,
+    surface = LightBackground,
     onSurface = InkPurple,
+    surfaceVariant = LightSurface,
+    surfaceContainer = LightSurface,
+    surfaceContainerHigh = LightSurfaceHigh,
 )
 
-/**
- * Dark mode is the primary design. Light mode follows the system unless
- * [darkTheme] is overridden (a user setting arrives in Milestone B).
- * Dynamic color is intentionally not used, to keep the brand palette.
- */
+/** True when the user turned on "Reduce motion" in Settings. Animations must check it. */
+val LocalReducedMotion = staticCompositionLocalOf { false }
+
 @Composable
 fun EmotionalCompanionTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode,
+    content: @Composable () -> Unit,
+) {
+    val dark = when (themeMode) {
+        ThemeMode.Dark -> true
+        ThemeMode.Light -> false
+        ThemeMode.System -> isSystemInDarkTheme()
+    }
+    EmotionalCompanionTheme(darkTheme = dark, content = content)
+}
+
+/** Dynamic color is intentionally not used, to keep the brand palette. */
+@Composable
+fun EmotionalCompanionTheme(
+    darkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
