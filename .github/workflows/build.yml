@@ -114,7 +114,7 @@ jobs:
           done
           if [ -z "$apksigner" ]; then echo "apksigner not found"; exit 0; fi
           echo "Using $apksigner"
-          "$apksigner" verify --verbose --print-certs "$APK_FILE" 2>&1 | grep -E "Verifies|Verified using|Signer #1 certificate (DN|SHA-256)" || true
+          "$apksigner" verify --verbose --print-certs "$APK_FILE" 2>&1 | grep -iE "verifies|verified using v2|signer" || true
 
       - name: Publish to Releases
         env:

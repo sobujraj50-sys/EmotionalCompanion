@@ -119,6 +119,8 @@ _Last updated: 2026-11-25, Milestone F (testing & APK). Phase 01 code complete_
 | Milestone E build 6 | GitHub Actions run 45451345002 | ✅ tests · lint · APK, Release `v0.5.0-mE-build6` |
 | Milestone E on phone | Physical device | ⏳ **Not yet run** |
 | Milestone F build 7 | GitHub Actions run 45452824132 | ✅ build + `emulator-tests` (8 tests, 0 failed) |
+| Release signing, build 9 | GitHub Actions run 45457873268 | ⚠️ `assembleRelease` with the secrets ✅, but the new certificate-print step failed (wrong build-tools pick) and blocked publishing → fixed |
+| Release signing, build 10 | GitHub Actions run 45458493334 | ✅ `assembleRelease` signed with the release key, apksigner: **Verifies** (APK Signature Scheme v2), Release `v1.0.0-phase01-build10`. The fingerprint line wasn't printed (grep filter), now widened |
 | Milestone F build 8 (per-test log) | GitHub Actions run 45454323263 | ✅ **8/8 PASSED, 0 skipped**: 3 navigation, 2 audio pipeline, 3 storage/protocol |
 
 **Nothing that talks to Google (connection test, live conversation, voice audition) has run yet**: CI has no API key, by design.
