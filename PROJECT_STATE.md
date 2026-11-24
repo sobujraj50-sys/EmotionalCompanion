@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-_Last updated: 2026-11-24, Milestone E (Emotional Voice Studio)_
+_Last updated: 2026-11-25, Milestone F (testing & APK). Phase 01 code complete_
 
 ## Current status
 | Milestone | State |
@@ -9,8 +9,8 @@ _Last updated: 2026-11-24, Milestone E (Emotional Voice Studio)_
 | B: Design & navigation | ✅ Done (phone screenshots 2026-11-24). Status-bar contrast fixed afterwards |
 | C: Secure API configuration | CI green (build 4). Phone test with a real key **not reported yet** (user went straight to D) |
 | D: Live audio prototype | CI green (build 5). Real conversation **not reported yet** (user went straight to E) |
-| E: Emotional Voice Studio | **CI build green (build 6). Waiting for phone test (together with D)** |
-| F: Testing & APK | Not started |
+| E: Emotional Voice Studio | CI green (build 6). Phone test **not reported yet** |
+| F: Testing & APK | ✅ CI green incl. **8/8 emulator tests passed** (run 45454323263). Release `v1.0.0-phase01` |
 
 ## Milestone A: what exists
 - Gradle Kotlin DSL project with version catalog (`gradle/libs.versions.toml`)
@@ -68,6 +68,37 @@ _Last updated: 2026-11-24, Milestone E (Emotional Voice Studio)_
 - `DefaultPersonality` replaced by `PersonalityEngine`
 - Unit tests: `PersonalityEngineTest` (7)
 
+## Milestone F: what exists
+- Instrumented tests (`app/src/androidTest`), run on a real Android 14 (API 34, x86_64, google_apis) emulator in GitHub Actions on every push:
+  - `AppNavigationTest`: launch → onboarding → Home (honest "not set up" state, AI notice) → Voice Studio (30 voices, Personality screen) → Settings → Gemini API screen
+  - `SecureStorageAndProtocolTest`: Keystore round trip (ciphertext ≠ key, survives a new instance, clear), setup JSON shape, server-message parsing with the platform org.json (Bangla captions included)
+  - `AudioPipelineTest`: real AudioRecord 16 kHz capture delivers chunks and stops; AudioTrack 24 kHz queue drains and clears instantly (interruption)
+- Workflow: new `emulator-tests` job (after `build`, doesn't block the release) that prints every test result into the log
+- Version 1.0.0-phase01
+
+## Phase 01 Definition of Done (spec §20)
+✅ verified · 🟡 verified in code/CI/emulator, needs the real phone + real Gemini key · ⏳ not verified
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Android project compiles | ✅ | Every CI build since build 1 |
+| Debug APK is generated | ✅ | GitHub Releases, latest `v1.0.0-phase01` |
+| Premium Home Screen works | ✅ | User screenshots (B) + emulator `AppNavigationTest` |
+| Navigation works | ✅ | User screenshots + emulator |
+| API key can be entered securely | ✅/🟡 | Keystore test on emulator ✅. Entering a real key on the phone not reported |
+| Gemini connection can be tested | 🟡 | `models.get` tester + unit tests. Not run against Google yet |
+| Microphone capture works | 🟡 | Emulator AudioRecord test ✅. Real phone not reported |
+| AI audio response playback works | 🟡 | Emulator AudioTrack test ✅. Gemini audio on the phone not reported |
+| Voice selection works | 🟡 | UI + persistence ✅ (emulator). Audition against Gemini not reported |
+| Bengali-English conversation is supported | 🟡 | Instruction + language preference ✅. Not heard yet |
+| Emotional personality instructions are applied | 🟡 | `PersonalityEngineTest` ✅, sent in setup ✅. Audible effect not judged yet |
+| Microphone stop control works | 🟡 | Stop path + emulator capture-stop test ✅. Phone not reported |
+| API and network errors are handled | 🟡 | Unit tests for codes/reasons ✅. Real Google close reasons unseen |
+| Free-only safeguards documented | ✅ | API_CONTRACT, PRIVACY, in-app texts |
+| Actual test results are recorded | ✅ | This file + docs/TESTING.md |
+
+**Phase 01 is code-complete and automatically tested, but not finished.** It's finished when the phone checklists for C, D and E (docs/TESTING.md) pass with a real Gemini key.
+
 ## Verification record
 | Check | Where | Result |
 |---|---|---|
@@ -87,8 +118,10 @@ _Last updated: 2026-11-24, Milestone E (Emotional Voice Studio)_
 | Milestone D real conversation | Physical device | ⏳ **Not yet run** |
 | Milestone E build 6 | GitHub Actions run 45451345002 | ✅ tests · lint · APK, Release `v0.5.0-mE-build6` |
 | Milestone E on phone | Physical device | ⏳ **Not yet run** |
+| Milestone F build 7 | GitHub Actions run 45452824132 | ✅ build + `emulator-tests` (8 tests, 0 failed) |
+| Milestone F build 8 (per-test log) | GitHub Actions run 45454323263 | ✅ **8/8 PASSED, 0 skipped**: 3 navigation, 2 audio pipeline, 3 storage/protocol |
 
-Milestones D and E are code- and CI-verified only. They are done when the D and E device checklists in docs/TESTING.md pass. **Nothing that talks to Gemini Live has been tested on a device yet.**
+**Nothing that talks to Google (connection test, live conversation, voice audition) has run yet**: CI has no API key, by design.
 
 ## Decisions
 1. **Build on GitHub Actions**, the same way as the user's other apps. ZIP upload → unpack → test → lint → APK → Release.
@@ -113,5 +146,12 @@ Milestones D and E are code- and CI-verified only. They are done when the D and 
 - Audition relies on the model reading the text exactly. A Live model may answer the line instead of reading it. If that happens, switch auditions to Gemini TTS (`gemini-3.1-flash-tts-preview`, free tier confirmed) in F.
 - Delivery/personality levels are prompt text, not API controls. Their audible effect must be judged by ear.
 
-## Next milestone
-**F: Testing & APK.** Run the D+E device checklists with the user and fix what fails. Add instrumentation/UI tests where useful. Enable R8 for release with keep rules. Set up stable signing (repo secrets) so updates install over each other. Write the final installation guide and a known-issues list.
+## Decisions in F
+- **R8/minification stays off.** For a personal APK the size (≈14 MB) is fine, and minification can only be checked for crashes on a device. Turn it on in a later phase together with keep rules and a device test.
+- **Stable signing needs the user's go-ahead.** It requires creating a signing key and storing it as two repository secrets. Until then, each CI build uses a new debug key, so a new APK can't update the installed app.
+
+## Next steps
+1. User runs the C → D → E phone checklists with a real key and reports the results and any error "Details" line.
+2. Fix what the phone reveals (most likely: setup field placement, voice availability, echo tuning, audition reading the line verbatim).
+3. Stable signing secrets (after approval).
+4. Phase 02 (docs/ROADMAP.md): user-controlled memory, conversation retention via Room, mood journal, time-zone and reunion countdown.

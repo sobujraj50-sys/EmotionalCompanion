@@ -5,7 +5,7 @@
 |---|---|---|
 | Unit | `gradlew.bat testDebugUnitTest` | `PcmAudioFormatTest` (5), `TimeOfDayTest` (3), `ThemeModeTest` (3), `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2), `ConversationTransitionsTest` (5), `LiveRulesTest` (7), `PersonalityEngineTest` (7) |
 | Lint | `gradlew.bat lintDebug` | Report: `app\build\reports\lint-results-debug.html` |
-| Instrumented | `gradlew.bat connectedDebugAndroidTest` | None yet (added with Milestone B UI) |
+| Instrumented | `gradlew.bat connectedDebugAndroidTest` (CI: `emulator-tests` job, API 34) | `AppNavigationTest` (3), `SecureStorageAndProtocolTest` (3), `AudioPipelineTest` (2) |
 
 ## Results log
 | Date | Where | Command | Result |
@@ -22,6 +22,8 @@
 | 2026-11-24 | GitHub Actions (build 4) | unit tests · lint · `assembleDebug` | ✅ Release v0.3.0-mC-build4 |
 | 2026-11-24 | GitHub Actions (build 5) | unit tests · lint · `assembleDebug` | ✅ Release v0.4.0-mD-build5 |
 | 2026-11-24 | GitHub Actions (build 6) | unit tests · lint · `assembleDebug` | ✅ Release v0.5.0-mE-build6 |
+| 2026-11-25 | GitHub Actions (build 7) | build + emulator instrumented tests | ✅ 8 tests, 0 failed |
+| 2026-11-25 | GitHub Actions (build 8) | build + emulator instrumented tests (per-test log) | ✅ 8/8 passed, 0 skipped |
 
 ## Physical-device checklist: Milestone A
 - [ ] APK from GitHub Releases downloads and installs
