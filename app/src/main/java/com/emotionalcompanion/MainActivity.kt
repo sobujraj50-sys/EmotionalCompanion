@@ -1,14 +1,18 @@
 package com.emotionalcompanion
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,12 +28,32 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels { MainViewModel.factory(container) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        )
         super.onCreate(savedInstanceState)
         setContent {
             val settings by mainViewModel.settings.collectAsStateWithLifecycle()
             val current = settings
-            EmotionalCompanionTheme(themeMode = current?.themeMode ?: ThemeMode.Dark) {
+            val darkTheme = when (current?.themeMode ?: ThemeMode.Dark) {
+                ThemeMode.Dark -> true
+                ThemeMode.Light -> false
+                ThemeMode.System -> isSystemInDarkTheme()
+            }
+
+            // System bar icons follow the app's theme, not the phone's, so they stay readable.
+            DisposableEffect(darkTheme) {
+                val style = if (darkTheme) {
+                    SystemBarStyle.dark(Color.TRANSPARENT)
+                } else {
+                    SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+                }
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+                onDispose { }
+            }
+
+            EmotionalCompanionTheme(darkTheme = darkTheme) {
                 CompositionLocalProvider(LocalReducedMotion provides (current?.reducedMotion ?: false)) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
