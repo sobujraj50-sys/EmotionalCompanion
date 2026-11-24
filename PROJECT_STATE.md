@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-_Last updated: 2026-11-24, Milestone D (live audio prototype)_
+_Last updated: 2026-11-24, Milestone E (Emotional Voice Studio)_
 
 ## Current status
 | Milestone | State |
@@ -8,8 +8,8 @@ _Last updated: 2026-11-24, Milestone D (live audio prototype)_
 | A: Environment & foundation | ✅ Done (CI green, opened on the user's phone 2026-11-24) |
 | B: Design & navigation | ✅ Done (phone screenshots 2026-11-24). Status-bar contrast fixed afterwards |
 | C: Secure API configuration | CI green (build 4). Phone test with a real key **not reported yet** (user went straight to D) |
-| D: Live audio prototype | **CI build green (build 5). Waiting for the first real conversation on the phone** |
-| E: Emotional Voice Studio | Not started |
+| D: Live audio prototype | CI green (build 5). Real conversation **not reported yet** (user went straight to E) |
+| E: Emotional Voice Studio | **CI build green (build 6). Waiting for phone test (together with D)** |
 | F: Testing & APK | Not started |
 
 ## Milestone A: what exists
@@ -58,6 +58,16 @@ _Last updated: 2026-11-24, Milestone D (live audio prototype)_
 - Default personality (spec §12) with honesty rules as the system instruction. Voice `Sulafat` (Warm)
 - Unit tests: `ConversationTransitionsTest` (5), `LiveRulesTest` (7)
 
+## Milestone E: what exists
+- `VoiceConfiguration`: all 30 prebuilt voices with Google's descriptors. The 6 spec candidates (Sulafat, Achernar, Vindemiatrix, Aoede, Leda, Kore) are shown first. Selection is saved and used by the live session
+- `TestDialogue`: fixed Bangla (spec default line), English and mixed lines. Every voice reads the same line
+- `VoiceAuditionPlayer`: plays a sample through **the same Gemini Live model** (short session, `realtimeInput.text`, no mic, USAGE_MEDIA playback, 30 s timeout). It counts toward the daily budget and is disabled during a conversation
+- `PersonalitySettings` + `PersonalityEngine`: nickname (cleaned, max 30 chars), language preference (Bangla-first / mixed / English-first), 7 character levels (affection, care, humor, romance, expressiveness, talkativeness, initiative), 4 delivery levels (warmth, softness, energy, pace). All are turned into system-instruction text. **The honesty rules are a fixed constant appended last**, and no setting can remove them
+- Voice tab = Voice Studio (test line, voices with Listen, delivery sliders, offline voice). Personality screen with the exact-instruction preview
+- `OfflineSpeech` (Android TextToSpeech, bn-BD): offline phone-voice preview, plus a spoken notice when a conversation fails with no internet. It only reads text and is not presented as the AI
+- `DefaultPersonality` replaced by `PersonalityEngine`
+- Unit tests: `PersonalityEngineTest` (7)
+
 ## Verification record
 | Check | Where | Result |
 |---|---|---|
@@ -75,8 +85,10 @@ _Last updated: 2026-11-24, Milestone D (live audio prototype)_
 | Milestone C on phone with real key | Physical device | ⏳ **Not reported** |
 | Milestone D build 5 | GitHub Actions run 45449536699 | ✅ tests · lint · APK, Release `v0.4.0-mD-build5` (13.8 MB) |
 | Milestone D real conversation | Physical device | ⏳ **Not yet run** |
+| Milestone E build 6 | GitHub Actions run 45451345002 | ✅ tests · lint · APK, Release `v0.5.0-mE-build6` |
+| Milestone E on phone | Physical device | ⏳ **Not yet run** |
 
-Milestone D is done only when a real Bengali voice conversation works on the phone (checklist in docs/TESTING.md). Everything in D is code- and CI-verified, **not yet device-verified**.
+Milestones D and E are code- and CI-verified only. They are done when the D and E device checklists in docs/TESTING.md pass. **Nothing that talks to Gemini Live has been tested on a device yet.**
 
 ## Decisions
 1. **Build on GitHub Actions**, the same way as the user's other apps. ZIP upload → unpack → test → lint → APK → Release.
@@ -98,5 +110,8 @@ Milestone D is done only when a real Bengali voice conversation works on the pho
 - `gemini-3.1-flash-live-preview` is labeled legacy. Affective dialog and proactive audio are **not supported on it** (Live guide), so they aren't enabled.
 - Echo/feedback depends on the phone's AEC quality. If she hears herself, turn off "Interrupt by speaking" (half duplex).
 
+- Audition relies on the model reading the text exactly. A Live model may answer the line instead of reading it. If that happens, switch auditions to Gemini TTS (`gemini-3.1-flash-tts-preview`, free tier confirmed) in F.
+- Delivery/personality levels are prompt text, not API controls. Their audible effect must be judged by ear.
+
 ## Next milestone
-**E: Emotional Voice Studio.** Voice selection and audition with the same Bengali/English/mixed test lines, PersonalityEngine (nickname, warmth, humor, romantic tone, expressiveness, talkativeness, language) generating the system instruction, and an offline Android TTS fallback.
+**F: Testing & APK.** Run the D+E device checklists with the user and fix what fails. Add instrumentation/UI tests where useful. Enable R8 for release with keep rules. Set up stable signing (repo secrets) so updates install over each other. Write the final installation guide and a known-issues list.

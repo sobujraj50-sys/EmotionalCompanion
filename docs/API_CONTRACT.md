@@ -50,7 +50,10 @@ Sources: https://ai.google.dev/api/live · https://ai.google.dev/gemini-api/docs
 | Voices | Prebuilt list (30) on the speech-generation page, including Sulafat (Warm), Achernar (Soft), Vindemiatrix (Gentle), Aoede (Breezy), Leda (Youthful), Kore (Firm) |
 | Not on 3.1 Flash Live | Affective dialog, proactive audio |
 
+| Text input | `{"realtimeInput":{"text":"..."}}` (WebSockets guide). Used for voice auditions |
+
 ### Open points (confirm on device)
 - Placement of `responseModalities`/`speechConfig`: the reference has them under `generationConfig`, while the guide's sample has `responseModalities` at the top of `setup`. The reference is used.
 - Close codes/reasons for invalid key, quota and invalid setup are not documented. They're classified loosely and the raw reason is shown.
+- Whether a Live model reliably reads an audition line verbatim (the audition instruction asks it to).
 - Free-tier rate limits for Live (concurrent sessions, requests/min) are not checked yet.

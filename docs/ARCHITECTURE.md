@@ -7,17 +7,17 @@ Single Gradle module (`:app`), layered by package. MVVM with unidirectional data
 com.emotionalcompanion
 ├── core/
 │   ├── designsystem/   colors, type, theme, icons, VoiceOrb, waveform [A ✅ · B ✅]
-│   ├── audio/          PcmAudioFormat, AudioLevel, capture, playback, focus/routing [A ✅ · D ✅]
+│   ├── audio/          PcmAudioFormat, AudioLevel, capture, playback, focus/routing [D ✅] · OfflineSpeech (Android TTS) [E ✅]
 │   ├── security/       SecretStore, KeystoreSecretStore, ApiKeyValidator [C ✅]
 │   └── common/         AppContainer (DI), dispatchers, result types   [A ✅]
 ├── ai/
 │   ├── provider/       Provider-neutral interfaces (LiveVoiceProvider)[D]
-│   ├── gemini/         catalog, tester [C ✅] · LiveProtocol, GeminiLiveClient, LiveSessionManager, ConnectionErrorHandler, UsageController, VoiceConfiguration [D ✅]
-│   ├── personality/    DefaultPersonality [D ✅] · PersonalityEngine [E]
+│   ├── gemini/         catalog, tester [C ✅] · LiveProtocol, GeminiLiveClient, LiveSessionManager, ConnectionErrorHandler, UsageController [D ✅] · VoiceConfiguration (30 voices, TestDialogue), VoiceAuditionPlayer [E ✅]
+│   ├── personality/    PersonalitySettings, PersonalityEngine (fixed honesty rules) [E ✅]
 │   └── emotion/        Emotional preference model                     [E]
 ├── data/settings      DataStore UI preferences                       [B ✅]
 ├── domain/conversation ConversationState, ConnectionStatus [B ✅] · ConversationStateManager/Transitions [D ✅]
-├── features/           onboarding, home, voicestudio (stub notice), settings [B ✅] · conversation, personality [D/E]
+├── features/           onboarding, home, settings [B–D ✅] · voicestudio, personality [E ✅]
 ├── navigation/         bottom-bar NavHost                             [B ✅]
 └── service/            foreground mic service (future phase)
 ```

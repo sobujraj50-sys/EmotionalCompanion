@@ -3,7 +3,7 @@
 ## Automated
 | Suite | Command (Windows) | Contents |
 |---|---|---|
-| Unit | `gradlew.bat testDebugUnitTest` | `PcmAudioFormatTest` (5), `TimeOfDayTest` (3), `ThemeModeTest` (3), `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2), `ConversationTransitionsTest` (5), `LiveRulesTest` (7) |
+| Unit | `gradlew.bat testDebugUnitTest` | `PcmAudioFormatTest` (5), `TimeOfDayTest` (3), `ThemeModeTest` (3), `GeminiModelCatalogTest` (4), `ConnectionTestResultTest` (2), `ConversationTransitionsTest` (5), `LiveRulesTest` (7), `PersonalityEngineTest` (7) |
 | Lint | `gradlew.bat lintDebug` | Report: `app\build\reports\lint-results-debug.html` |
 | Instrumented | `gradlew.bat connectedDebugAndroidTest` | None yet (added with Milestone B UI) |
 
@@ -21,6 +21,7 @@
 | 2026-11-24 | GitHub Actions (build 3) | lint | ❌ ContextCastToActivity → fixed |
 | 2026-11-24 | GitHub Actions (build 4) | unit tests · lint · `assembleDebug` | ✅ Release v0.3.0-mC-build4 |
 | 2026-11-24 | GitHub Actions (build 5) | unit tests · lint · `assembleDebug` | ✅ Release v0.4.0-mD-build5 |
+| 2026-11-24 | GitHub Actions (build 6) | unit tests · lint · `assembleDebug` | ✅ Release v0.5.0-mE-build6 |
 
 ## Physical-device checklist: Milestone A
 - [ ] APK from GitHub Releases downloads and installs
@@ -74,3 +75,19 @@ Uninstall the previous build, install build 5, then add the API key again (Setti
 - [ ] Stay silent for 60 s: the session ends with the "quiet moment" message
 - [ ] Usage line on Home increases after a conversation and survives an app restart
 - [ ] If any error card appears, copy its **Details** line and send it
+
+## Physical-device checklist: Milestone E
+Run the Milestone D checklist first. E depends on the live connection working.
+- [ ] Voice tab: 6 suggested voices, "Show all 30 voices" shows the rest
+- [ ] Bangla test line → Listen on **Sulafat**: she reads the line aloud (and does **not** answer it). Record whether she read it exactly
+- [ ] Same line on Achernar, Vindemiatrix, Aoede, Leda, Kore. Note your favorite for warmth and natural Bangla
+- [ ] English and Mixed lines: Bangla-English switching sounds natural
+- [ ] Select a voice, start a conversation on Home: she uses the selected voice
+- [ ] Delivery sliders (e.g. Pace very slow, Softness very high) → Listen again: is there an audible difference?
+- [ ] Personality: nickname "জান" → in the next conversation she uses it now and then (not every sentence)
+- [ ] Talkativeness very low → short replies. Very high → longer, still pausing for you
+- [ ] Ask "তুমি কি আমার বউ?" / "Are you a real person?": she answers honestly that she is an AI, kindly, at every setting
+- [ ] "Show the exact instruction" shows the full text, with the honesty rules at the end
+- [ ] Offline phone voice → Listen: speaks the line in Bangla, or shows how to add Bangla
+- [ ] Turn off internet → start a conversation: the error card appears and the phone voice speaks the offline notice
+- [ ] Listen is disabled while a conversation is running on Home
