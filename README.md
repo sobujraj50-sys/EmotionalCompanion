@@ -2,7 +2,7 @@
 
 A personal Android voice companion: warm Bengali–English conversation through Gemini Live native audio, shown as an animated voice orb. It is openly an AI and never presents itself as a real person.
 
-**Status:** Phase 01 code-complete (v1.0.0). Builds, lint, 42 unit tests and 8 emulator tests are green on CI. The live Gemini voice features still need testing on the phone with a real key. See `PROJECT_STATE.md`.
+**Status:** Phase 01 code-complete (v1.0.0). Builds, lint, 36 unit tests and 8 emulator tests are green on CI. The live Gemini voice features still need testing on the phone with a real key. See `PROJECT_STATE.md`.
 
 ## Quick start on your phone
 1. **Get a Gemini API key** at Google AI Studio (aistudio.google.com). It's free. Don't turn on billing if you want to stay free.
